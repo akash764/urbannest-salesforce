@@ -1,0 +1,65 @@
+<template>
+    <div class="slds-box slds-theme_default slds-p-around_medium emi-widget">
+        <div class="slds-m-bottom_medium">
+            <span class="slds-badge slds-theme_inverse">Financial Planning</span>
+            <h2 class="slds-text-heading_medium slds-m-top_xx-small">Smart Home Loan EMI Calculator</h2>
+            <p class="slds-text-body_small slds-text-color_weak">Estimate monthly installments, down payments, and loan eligibility in seconds.</p>
+        </div>
+
+        <div class="slds-grid slds-gutters slds-wrap">
+            <!-- Controls Column -->
+            <div class="slds-col slds-size_1-of-1 slds-medium-size_7-of-12 space-y-4">
+                <div>
+                    <div class="slds-grid slds-grid_align-spread slds-m-bottom_xx-small">
+                        <label class="slds-form-element__label">Property Value</label>
+                        <span class="slds-text-heading_small font-weight-bold text-brand">₹ {formattedPrice}</span>
+                    </div>
+                    <lightning-slider min="3000000" max="25000000" step="500000" value={propertyPrice} onchange={handlePriceChange}></lightning-slider>
+                </div>
+
+                <div class="slds-m-top_small">
+                    <div class="slds-grid slds-grid_align-spread slds-m-bottom_xx-small">
+                        <label class="slds-form-element__label">Down Payment Percentage</label>
+                        <span class="slds-text-heading_small font-weight-bold text-success">{downPaymentPct}% (₹ {formattedDownPayment})</span>
+                    </div>
+                    <lightning-slider min="10" max="50" step="5" value={downPaymentPct} onchange={handleDownPaymentChange}></lightning-slider>
+                </div>
+
+                <div class="slds-grid slds-gutters slds-m-top_small">
+                    <div class="slds-col slds-size_1-of-2">
+                        <lightning-input type="number" label="Tenure (Years)" value={tenureYears} onchange={handleTenureChange} min="5" max="30"></lightning-input>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2">
+                        <lightning-input type="number" step="0.1" label="Interest Rate (% p.a.)" value={interestRate} onchange={handleInterestChange}></lightning-input>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Result Summary Column -->
+            <div class="slds-col slds-size_1-of-1 slds-medium-size_5-of-12 slds-m-top_medium slds-m-medium-top_none">
+                <div class="slds-box slds-box_small slds-theme_shade slds-text-align_center">
+                    <p class="slds-text-title_caps slds-text-color_weak">Monthly Estimated EMI</p>
+                    <div class="slds-text-heading_large font-weight-bold slds-m-vertical_x-small text-brand">
+                        ₹ {formattedEMI}
+                    </div>
+                    <p class="slds-text-body_small slds-text-color_weak">for {tenureYears} years ({totalMonths} installments)</p>
+
+                    <div class="slds-m-top_medium slds-border_top slds-p-top_small slds-text-align_left text-xs">
+                        <div class="slds-grid slds-grid_align-spread slds-m-bottom_xx-small">
+                            <span class="slds-text-color_weak">Principal Amount:</span>
+                            <span class="font-weight-bold">₹ {formattedPrincipal}</span>
+                        </div>
+                        <div class="slds-grid slds-grid_align-spread slds-m-bottom_xx-small">
+                            <span class="slds-text-color_weak">Total Interest:</span>
+                            <span class="font-weight-bold">₹ {formattedTotalInterest}</span>
+                        </div>
+                        <div class="slds-grid slds-grid_align-spread">
+                            <span class="slds-text-color_weak">Total Repayment:</span>
+                            <span class="font-weight-bold">₹ {formattedTotalPayment}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Apartment Tower</label>
+    <pluralLabel>Apartment Towers</pluralLabel>
+    <nameField>
+        <label>Block Name</label>
+        <type>Text</type>
+    </nameField>
+    <sharingModel>ControlledByParent</sharingModel>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>Represents an apartment block or tower within a project.</description>
+</CustomObject>

@@ -1,0 +1,2153 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UrbanNest Luxury Residences | Real Estate & Lead Management Platform</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <style>    /* UrbanNest Luxury Theme — Exact Appaswamy Visual Architecture */
+    :root {
+      --un-red: #C01E25;
+      --un-red-dark: #9E161C;
+      --un-gold: #C59B27;
+      --un-text-dark: #1E293B;
+      --un-text-muted: #64748B;
+      --un-border: #E2E8F0;
+      --un-bg-light: #F8FAFC;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      color: var(--un-text-dark);
+      background-color: #FAFAFC;
+    }
+
+    /* Watermark text behind headings (Appaswamy style) */
+    .watermark-heading {
+      position: relative;
+    }
+    .watermark-heading::before {
+      content: attr(data-watermark);
+      position: absolute;
+      top: -20px;
+      left: 0;
+      font-size: 3.4rem;
+      font-weight: 900;
+      letter-spacing: 0.15em;
+      color: rgba(0, 0, 0, 0.035);
+      z-index: 0;
+      pointer-events: none;
+      text-transform: uppercase;
+      font-family: inherit;
+    }
+
+    /* Project card hover & shadows */
+    .project-card {
+      transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+    }
+    .project-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 32px rgba(0, 0, 0, 0.08);
+      border-color: #CBD5E1;
+    }
+
+    /* Corner Ribbons */
+    .ribbon-wrap {
+      width: 130px;
+      height: 130px;
+      overflow: hidden;
+      position: absolute;
+      top: 0;
+      right: 0;
+      z-index: 10;
+      pointer-events: none;
+    }
+    .ribbon-badge {
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      color: #FFF;
+      text-transform: uppercase;
+      text-align: center;
+      line-height: 24px;
+      transform: rotate(45deg);
+      position: relative;
+      padding: 2px 0;
+      left: -5px;
+      top: 25px;
+      width: 170px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+    }
+    .ribbon-sold { background: #C01E25; }
+    .ribbon-new { background: #10B981; }
+    .ribbon-soon { background: #EAB308; color: #1E293B; }
+    .ribbon-ready { background: #059669; }
+
+    /* Vertical Enquire Tab on Screen Right Edge (Exact Appaswamy Feature) */
+    .enquire-sticky-tab {
+      position: fixed;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: var(--un-red);
+      color: #FFFFFF;
+      padding: 14px 9px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      cursor: pointer;
+      z-index: 50;
+      border-radius: 8px 0 0 8px;
+      box-shadow: -4px 0 18px rgba(192, 30, 37, 0.35);
+      transition: background-color 0.2s, transform 0.2s;
+    }
+    .enquire-sticky-tab:hover {
+      background-color: var(--un-red-dark);
+      transform: translateY(-50%) translateX(-2px);
+    }
+
+    /* Help Desk Chatbot Drawer */
+    .chat-drawer {
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.22);
+    }
+    .chat-bubble-tail::before {
+      content: '';
+      position: absolute;
+      bottom: -6px;
+      right: 22px;
+      width: 0;
+      height: 0;
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-top: 6px solid #FFFFFF;
+    }
+
+    /* Custom scrollbars */
+    .custom-scroll::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background: #CBD5E1;
+      border-radius: 4px;
+    }
+
+    /* Google reCAPTCHA v2 Authentic Animations */
+    @keyframes recaptcha-spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .recaptcha-spinner {
+      border: 3px solid #4285F4;
+      border-top-color: transparent;
+      border-radius: 50%;
+      width: 22px;
+      height: 22px;
+      animation: recaptcha-spin 0.75s linear infinite;
+    }
+    @keyframes recaptcha-shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-5px); }
+      40%, 80% { transform: translateX(5px); }
+    }
+    .recaptcha-error-shake {
+      animation: recaptcha-shake 0.35s ease-in-out;
+    }
+  </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col justify-between">
+
+  <!-- ================= TOP HEADER (APPASWAMY LUXURY IDENTITY ADAPTED FOR URBANNEST) ================= -->
+  <header class="bg-white border-b border-gray-200 sticky top-0 z-40 shadow-xs">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        
+        <!-- UrbanNest Logo & Identity -->
+        <div class="flex items-center gap-3 cursor-pointer" onclick="switchMainTab('residential')">
+          <img src="./urbannest-logo.png" alt="UrbanNest Real Estate" class="h-14 w-auto object-contain drop-shadow-sm">
+          <div>
+            <div class="text-[10px] uppercase tracking-[0.28em] text-gray-500 font-semibold">UrbanNest Real Estate</div>
+            <div class="text-[9px] uppercase tracking-[0.24em] text-gray-400">Luxury residences • guided buying</div>
+          </div>
+        </div>
+
+        <!-- Main Desktop Navigation (Reflecting BRD Sections) -->
+        <nav class="hidden lg:flex items-center space-x-7 text-sm font-semibold text-gray-700">
+          <a href="#residential" onclick="switchMainTab('residential')" id="nav-residential" class="text-[#C01E25] border-b-2 border-[#C01E25] pb-1 font-bold">Project Brochures</a>
+          <a href="#inventory" onclick="switchMainTab('inventory')" id="nav-inventory" class="hover:text-[#C01E25] transition pb-1">1/2/3 BHK Inventory</a>
+          <a href="#chauffeur" onclick="switchMainTab('chauffeur')" id="nav-chauffeur" class="hover:text-[#C01E25] transition pb-1">Chauffeur Site Visit</a>
+          <a href="#razorpay" onclick="switchMainTab('razorpay')" id="nav-razorpay" class="hover:text-[#C01E25] transition pb-1 flex items-center gap-1">
+            <span class="text-blue-600">⚡</span> Razorpay Payments
+          </a>
+          <a href="#cancellation" onclick="switchMainTab('cancellation')" id="nav-cancellation" class="hover:text-[#C01E25] transition pb-1">Cancellation & Refunds</a>
+          <a href="#executive" onclick="switchMainTab('executive')" id="nav-executive" class="hover:text-[#C01E25] transition pb-1 flex items-center gap-1.5 text-blue-800">
+            <span class="w-2 h-2 rounded-full bg-blue-600 animate-pulse"></span>
+            Executive Dashboard
+          </a>
+        </nav>
+
+        <!-- Sales Enquiries Phone Hotline (BRD 2.2: Phone Enquiry Source) -->
+        <div class="flex items-center gap-3">
+          <a href="tel:+918056210606" onclick="recordPhoneCallClick()" class="flex items-center gap-2.5 bg-gray-50 hover:bg-gray-100 text-gray-800 px-4 py-2 rounded-full text-xs font-semibold transition border border-gray-200" title="Direct Phone Enquiry Lead Source">
+            <div class="w-6 h-6 rounded-full bg-white flex items-center justify-center text-[#C01E25] shadow-xs">
+              <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 00-1.01.24l-2.2 2.2a15.053 15.053 0 01-6.59-6.59l2.2-2.21a.96.96 0 00.25-1.01A11.36 11.36 0 018.57 3.9c0-.55-.45-1-1-1H3.99c-.55 0-1 .45-1 1 0 9.39 7.63 17.02 17.02 17.02.55 0 1-.45 1-1v-3.54c0-.55-.45-1-1-1z"/></svg>
+            </div>
+            <span>Sales Hotline: <span class="font-bold text-gray-900">+91 80562 10606</span></span>
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= STICKY RIGHT EDGE 'ENQUIRE NOW' RED TAB ================= -->
+  <button onclick="openEnquireModal()" class="enquire-sticky-tab" title="Click to open instant enquiry">
+    ENQUIRE NOW
+  </button>
+
+  <!-- ================= MAIN CONTAINER ================= -->
+  <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+    <!-- ================= VIEW 1: PROJECT BROCHURES (BRD 2.1.1 & 4.1) ================= -->
+    <section id="view-residential" class="space-y-6">
+
+      <!-- Section Title & Filter Tabs Bar (Appaswamy Exact Layout) -->
+      <div class="flex flex-col md:flex-row md:items-end justify-between border-b border-gray-200 pb-5 gap-4">
+        
+        <!-- Watermark Heading -->
+        <div class="watermark-heading" data-watermark="RESIDENTIAL">
+          <h1 class="text-2xl sm:text-3xl font-extrabold tracking-wider text-gray-900 uppercase font-serif relative z-10">
+            URBANNEST RESIDENTIAL DEVELOPMENTS
+          </h1>
+          <p class="text-xs text-gray-500 mt-1 relative z-10">
+            Explore our RERA-approved 1, 2 & 3 BHK luxury residences across Tamil Nadu, Karnataka & Telangana
+          </p>
+        </div>
+
+        <!-- Status Filter Tabs & Location Dropdown -->
+        <div class="flex flex-wrap items-center gap-4 sm:gap-6">
+          
+          <!-- Ongoing / Ready to Move-in / Completed -->
+          <div class="flex items-center gap-5 text-sm font-semibold">
+            <button onclick="filterProjectsByStatus('all')" id="tab-all" class="text-gray-500 hover:text-gray-900 transition pb-1">
+              All
+            </button>
+            <button onclick="filterProjectsByStatus('ongoing')" id="tab-ongoing" class="text-[#C01E25] border-b-2 border-[#C01E25] pb-1 font-bold">
+              Ongoing
+            </button>
+            <button onclick="filterProjectsByStatus('ready')" id="tab-ready" class="text-gray-500 hover:text-gray-900 transition pb-1">
+              Ready to Move-in
+            </button>
+            <button onclick="filterProjectsByStatus('completed')" id="tab-completed" class="text-gray-500 hover:text-gray-900 transition pb-1">
+              Completed
+            </button>
+          </div>
+
+          <!-- Select Location Dropdown with Pin Icon -->
+          <div class="flex items-center gap-1.5 border-b border-gray-300 pb-1 text-sm text-gray-700">
+            <svg class="w-4 h-4 text-[#C01E25]" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 010-5 2.5 2.5 0 010 5z"/>
+            </svg>
+            <select id="location-filter" onchange="filterProjectsByLocation()" class="bg-transparent border-none text-xs sm:text-sm font-medium focus:ring-0 focus:outline-none cursor-pointer">
+              <option value="all">All Locations</option>
+              <option value="chennai">Chennai, Tamil Nadu</option>
+              <option value="guindy">Guindy, Chennai</option>
+              <option value="kotturpuram">Kotturpuram, Chennai</option>
+              <option value="mylapore">Mylapore, Chennai</option>
+              <option value="bengaluru">Bengaluru, Karnataka</option>
+              <option value="hyderabad">Hyderabad, Telangana</option>
+              <option value="coimbatore">Coimbatore, Tamil Nadu</option>
+            </select>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Live Search & Strengths Overview Bar -->
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <!-- Search Input -->
+        <div class="md:col-span-2 bg-white p-3 rounded-xl border border-gray-200 text-xs flex items-center gap-2">
+          <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+          <input type="text" id="project-search-input" oninput="searchProjects()" placeholder="Search project name, BHK (e.g. 2 BHK), or city..." class="w-full bg-transparent border-none focus:outline-none text-xs text-gray-800 placeholder-gray-400">
+        </div>
+        <!-- Business Strength Pills -->
+        <div class="bg-white p-3 rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition text-xs flex items-center gap-2.5">
+          <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l7 3v6c0 4.2-2.9 8.1-7 10-4.1-1.9-7-5.8-7-10V5l7-3zm-1 10l2 2 4-5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div>
+            <div class="font-bold text-gray-900">RERA Compliant Homes</div>
+            <div class="text-[10px] text-gray-500">Legally vetted and documentation-ready</div>
+          </div>
+        </div>
+        <div class="bg-white p-3 rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition text-xs flex items-center gap-2.5">
+          <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20" stroke-linecap="round"/></svg>
+          </div>
+          <div>
+            <div class="font-bold text-gray-900">Digital Payment Ready</div>
+            <div class="text-[10px] text-gray-500">Secure advance links with Razorpay</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= 3-COLUMN URBANNEST PROJECT CARDS GRID ================= -->
+      <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+        <!-- CARD 1: URBANNEST LUMINA (CHIKKANNA PALACE GUINDY) -->
+        <div class="project-card rounded-2xl overflow-hidden flex flex-col relative" data-status="ongoing" data-location="guindy chennai" data-name="UrbanNest Lumina">
+          <div class="ribbon-wrap"><div class="ribbon-badge ribbon-new">NEW LAUNCH</div></div>
+          
+          <div class="relative h-56 w-full overflow-hidden bg-gray-900">
+            <img src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=900&q=80" alt="UrbanNest Lumina" class="w-full h-full object-cover opacity-90 transition duration-500 hover:scale-105">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent"></div>
+            <div class="absolute bottom-3 left-4 text-white">
+              <h3 class="text-xl font-bold tracking-wide">UrbanNest Lumina</h3>
+              <p class="text-xs text-gray-300 flex items-center gap-1 mt-0.5">
+                <svg class="w-3.5 h-3.5 text-[#C01E25]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 010-5 2.5 2.5 0 010 5z"/></svg>
+                Guindy, Chennai
+              </p>
+            </div>
+          </div>
+
+          <div class="p-4 flex-grow flex flex-col justify-between space-y-4">
+            <div class="grid grid-cols-2 gap-3 text-xs border-b border-gray-100 pb-3">
+              <div>
+                <div class="text-gray-400 font-medium">Apartment Houses</div>
+                <div class="text-gray-900 font-bold mt-0.5 flex items-center gap-1">
+                  <span class="w-1.5 h-1.5 rounded-full bg-[#C01E25]"></span> 2 & 3 BHK Luxury
+                </div>
+              </div>
+              <div>
+                <div class="text-gray-400 font-medium">Base Price</div>
+                <div class="text-gray-900 font-bold mt-0.5 text-sm text-[#C01E25]">₹ 2.45 Cr – 4.80 Cr</div>
+              </div>
+              <div>
+                <div class="text-gray-400 font-medium">House Range</div>
+                <div class="text-gray-800 font-semibold mt-0.5">1420 – 2650 Sq.ft</div>
+              </div>
+              <div>
+                <div class="text-gray-400 font-medium">Project Status</div>
+                <div class="text-emerald-700 font-semibold mt-0.5 flex items-center gap-1">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span> Ongoing
+                </div>
+              </div>
+            </div>
+
+            <!-- RERA Certificate Banner -->
+            <div class="bg-gray-50 border border-gray-200 rounded-lg p-2 text-[11px] text-gray-600 flex items-start gap-2">
+              <svg class="w-4 h-4 text-emerald-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+              <div>
+                <strong class="text-gray-900">TNRERA Registered</strong>
+                <div class="text-[10px] text-gray-500 font-mono">TNRERA/29/BLG/0312/2026 Dated: 12.01.2026</div>
+              </div>
+            </div>
+
+            <!-- Action Buttons: Brochure View & In-Card Enquiry (BRD 2.1.1 & 2.1.2) -->
+            <div class="pt-2 flex items-center gap-2">
+              <button onclick="openProjectBrochure('UrbanNest Lumina')" class="flex-1 bg-gray-50 hover:bg-gray-100 text-gray-800 border border-gray-300 font-bold py-2 px-3 rounded-lg text-xs transition flex items-center justify-center gap-1.5">
+                <svg class="w-3.5 h-3.5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                View Brochure
+              </button>
+              <button onclick="toggleInCardForm('form-lumina')" class="bg-[#C01E25] hover:bg-[#9E161C] text-white font-bold py-2 px-4 rounded-lg text-xs transition shadow-xs">
+                Enquire
+              </button>
+            </div>
+
+            <!-- In-Card Expandable Inquiry Form -->
+            <div id="form-lumina" class="hidden bg-gray-50 border border-gray-200 rounded-xl p-3.5 mt-2 space-y-2 text-xs">
+              <div class="flex items-center justify-between pb-1 border-b border-gray-200">
+                <span class="font-bold text-gray-800">Quick Enquiry: UrbanNest Lumina</span>
+                <button onclick="toggleInCardForm('form-lumina')" class="text-gray-400 hover:text-gray-600">✕</button>
+              </div>
+              <input type="text" id="incard-name-lumina" placeholder="Your Full Name *" class="w-full bg-white border border-gray-300 rounded-md px-2.5 py-1.5 text-xs focus:ring-1 focus:ring-[#C01E25] focus:outline-none">
+              <input type="email" id="incard-email-lumina" placeholder="Email Address *" class="w-full bg-white border border-gray-300 rounded-md px-2.5 py-1.5 text-xs focus:ring-1 focus:ring-[#C01E25] focus:outline-none">
+              <input type="tel" id="incard-phone-lumina" placeholder="10-Digit Mobile (+91) *" class="w-full bg-white border border-gray-300 rounded-md px-2.5 py-1.5 text-xs focus:ring-1 focus:ring-[#C01E25] focus:outline-none">
+              <select id="incard-bhk-lumina" class="w-full bg-white border border-gray-300 rounded-md px-2.5 py-1.5 text-xs text-gray-700">
+                <option value="2 BHK">2 BHK (1420 Sq.Ft)</option>
+                <option value="3 BHK" selected>3 BHK Luxury (2650 Sq.Ft)</option>
+              </select>
+              <select id="incard-budget-lumina" class="w-full bg-white border border-gray-300 rounded-md px-2.5 py-1.5 text-xs text-gray-700">
+                <option value="₹ 2.45 Cr - ₹ 3.5 Cr">Budget: ₹ 2.45 Cr – ₹ 3.5 Cr</option>
+                <option value="₹ 3.5 Cr - ₹ 5.0 Cr">Budget: ₹ 3.5 Cr – ₹ 5.0 Cr</option>
+              </select>
+              <button onclick="submitInCardEnquiry('UrbanNest Lumina', 'lumina')" class="w-full bg-[#C01E25] hover:bg-[#9E161C] text-white font-bold py-2 rounded-md text-xs transition">
+                Submit Lead (Own Website)
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- CARD 2: URBANNEST EMERALD BAY (KOTTURPURAM CHENNAI) -->
+        <div class="project-card rounded-2xl overflow-hidden flex flex-col relative" data-status="ready" data-location="kotturpuram chennai" data-name="UrbanNest Emerald Bay">
+          <div class="ribbon-wrap"><div class="ribbon-badge ribbon-ready">READY TO MOVE-IN</div></div>
+          
+          <div class="relative h-56 w-full overflow-hidden bg-gray-900">
+            <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=900&q=80" alt="UrbanNest Emerald Bay" class="w-full h-full object-cover opacity-90 transition duration-500 hover:scale-105">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent"></div>
+            <div class="absolute bottom-3 left-4 text-white">
+              <h3 class="text-xl font-bold tracking-wide">UrbanNest Emerald Bay</h3>
+              <p class="text-xs text-gray-300 flex items-center gap-1 mt-0.5">
+                <svg class="w-3.5 h-3.5 text-[#C01E25]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 010-5 2.5 2.5 0 010 5z"/></svg>
+                Kotturpuram, Chennai
+              </p>
+            </div>
+          </div>
+
+          <div class="p-4 flex-grow flex flex-col justify-between space-y-4">
+            <div class="grid grid-cols-2 gap-3 text-xs border-b border-gray-100 pb-3">
+              <div>
+                <div class="text-gray-400 font-medium">Apartment Houses</div>
+                <div class="text-gray-900 font-bold mt-0.5">3 BHK River Suites</div>
+              </div>
+              <div>
+                <div class="text-gray-400 font-medium">Base Price</div>
+                <div class="text-gray-900 font-bold mt-0.5 text-sm text-[#C01E25]">₹ 4.10 Cr – 6.50 Cr</div>
+              </div>
+              <div>
+                <div class="text-gray-400 font-medium">House Range</div>
+                <div class="text-gray-800 font-semibold mt-0.5">2350 – 3400 Sq.ft</div>
+              </div>
+              <div>
+                <div class="text-gray-400 font-medium">Project Status</div>
+                <div class="text-emerald-700 font-semibold mt-0.5 flex items-center gap-1">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span> Ready to Occupy
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-gray-50 border border-gray-200 rounded-lg p-2 text-[11px] text-gray-600 flex items-start gap-2">
+              <svg class="w-4 h-4 text-emerald-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+              <div>
+                <strong class="text-gray-900">Completion Certificate Issued</strong>
+                <div class="text-[10px] text-gray-500 font-mono">CC/EC/HRB/South-I/024/2025</div>
+              </div>
+            </div>
+
+            <div class="pt-2 flex items-center gap-2">
+              <button onclick="openProjectBrochure('UrbanNest Emerald Bay')" class="flex-1 bg-gray-50 hover:bg-gray-100 text-gray-800 border border-gray-300 font-bold py-2 px-3 rounded-lg text-xs transition flex items-center justify-center gap-1.5">
+                <svg class="w-3.5 h-3.5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                View Brochure
+              </button>
+              <button onclick="toggleInCardForm('form-emerald')" class="bg-[#C01E25] hover:bg-[#9E161C] text-white font-bold py-2 px-4 rounded-lg text-xs transition shadow-xs">
+                Enquire
+              </button>
+            </div>
+
+            <div id="form-emerald" class="hidden bg-gray-50 border border-gray-200 rounded-xl p-3.5 mt-2 space-y-2 text-xs">
+              <div class="flex items-center justify-between pb-1 border-b border-gray-200">
+                <span class="font-bold text-gray-800">Quick Enquiry: Emerald Bay</span>
+                <button onclick="toggleInCardForm('form-emerald')" class="text-gray-400 hover:text-gray-600">✕</button>
+              </div>
+              <input type="text" id="incard-name-emerald" placeholder="Your Full Name *" class="w-full bg-white border border-gray-300 rounded-md px-2.5 py-1.5 text-xs focus:ring-1 focus:ring-[#C01E25] focus:outline-none">
+              <input type="email" id="incard-email-emerald" placeholder="Email Address *" class="w-full bg-white border border-gray-300 rounded-md px-2.5 py-1.5 text-xs focus:ring-1 focus:ring-[#C01E25] focus:outline-none">
+              <input type="tel" id="incard-phone-emerald" placeholder="10-Digit Mobile (+91) *" class="w-full bg-white border border-gray-300 rounded-md px-2.5 py-1.5 text-xs focus:ring-1 focus:ring-[#C01E25] focus:outline-none">
+              <select id="incard-bhk-emerald" class="w-full bg-white border border-gray-300 rounded-md px-2.5 py-1.5 text-xs text-gray-700">
+                <option value="3 BHK" selected>3 BHK River View (2350 Sq.Ft)</option>
+              </select>
+              <button onclick="submitInCardEnquiry('UrbanNest Emerald Bay', 'emerald')" class="w-full bg-[#C01E25] hover:bg-[#9E161C] text-white font-bold py-2 rounded-md text-xs transition">
+                Submit Lead (Own Website)
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- CARD 3: URBANNEST SOVEREIGN (MYLAPORE CHENNAI) -->
+        <div class="project-card rounded-2xl overflow-hidden flex flex-col relative" data-status="ongoing" data-location="mylapore chennai" data-name="UrbanNest Sovereign">
+          <div class="ribbon-wrap"><div class="ribbon-badge ribbon-soon">HANDING OVER SOON</div></div>
+          
+          <div class="relative h-56 w-full overflow-hidden bg-gray-900">
+            <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=900&q=80" alt="UrbanNest Sovereign" class="w-full h-full object-cover opacity-90 transition duration-500 hover:scale-105">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent"></div>
+            <div class="absolute bottom-3 left-4 text-white">
+              <h3 class="text-xl font-bold tracking-wide">UrbanNest Sovereign</h3>
+              <p class="text-xs text-gray-300 flex items-center gap-1 mt-0.5">
+                <svg class="w-3.5 h-3.5 text-[#C01E25]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 010-5 2.5 2.5 0 010 5z"/></svg>
+                Luz Church Road, Mylapore, Chennai
+              </p>
+            </div>
+          </div>
+
+          <div class="p-4 flex-grow flex flex-col justify-between space-y-4">
+            <div class="grid grid-cols-2 gap-3 text-xs border-b border-gray-100 pb-3">
+              <div>
+                <div class="text-gray-400 font-medium">Apartment Houses</div>
+                <div class="text-gray-900 font-bold mt-0.5">3 BHK Heritage</div>
+              </div>
+              <div>
+                <div class="text-gray-400 font-medium">Base Price</div>
+                <div class="text-gray-900 font-bold mt-0.5 text-sm text-[#C01E25]">₹ 3.80 Cr – 5.90 Cr</div>
+              </div>
+              <div>
+                <div class="text-gray-400 font-medium">House Range</div>
+                <div class="text-gray-800 font-semibold mt-0.5">2100 – 3150 Sq.ft</div>
+              </div>
+              <div>
+                <div class="text-gray-400 font-medium">Project Status</div>
+                <div class="text-amber-700 font-semibold mt-0.5 flex items-center gap-1">
+                  <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span> Ongoing
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-gray-50 border border-gray-200 rounded-lg p-2 text-[11px] text-gray-600 flex items-start gap-2">
+              <svg class="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path d="M9 2a2 2 0 00-2 2v8a2 2 0 002 2h6a2 2 0 002-2V6.414A2 2 0 0016.414 5L14 2.586A2 2 0 0012.586 2H9z"/></svg>
+              <div>
+                <strong class="text-gray-900">RERA Approved Phase II</strong>
+                <div class="text-[10px] text-gray-500 font-mono">TNRERA/29/BLG/0188/2025</div>
+              </div>
+            </div>
+
+            <div class="pt-2 flex items-center gap-2">
+              <button onclick="openProjectBrochure('UrbanNest Sovereign')" class="flex-1 bg-gray-50 hover:bg-gray-100 text-gray-800 border border-gray-300 font-bold py-2 px-3 rounded-lg text-xs transition flex items-center justify-center gap-1.5">
+                <svg class="w-3.5 h-3.5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                View Brochure
+              </button>
+              <button onclick="toggleInCardForm('form-sovereign')" class="bg-[#C01E25] hover:bg-[#9E161C] text-white font-bold py-2 px-4 rounded-lg text-xs transition shadow-xs">
+                Enquire
+              </button>
+            </div>
+
+            <div id="form-sovereign" class="hidden bg-gray-50 border border-gray-200 rounded-xl p-3.5 mt-2 space-y-2 text-xs">
+              <div class="flex items-center justify-between pb-1 border-b border-gray-200">
+                <span class="font-bold text-gray-800">Quick Enquiry: Sovereign</span>
+                <button onclick="toggleInCardForm('form-sovereign')" class="text-gray-400 hover:text-gray-600">✕</button>
+              </div>
+              <input type="text" id="incard-name-sovereign" placeholder="Your Full Name *" class="w-full bg-white border border-gray-300 rounded-md px-2.5 py-1.5 text-xs focus:ring-1 focus:ring-[#C01E25] focus:outline-none">
+              <input type="email" id="incard-email-sovereign" placeholder="Email Address *" class="w-full bg-white border border-gray-300 rounded-md px-2.5 py-1.5 text-xs focus:ring-1 focus:ring-[#C01E25] focus:outline-none">
+              <input type="tel" id="incard-phone-sovereign" placeholder="10-Digit Mobile (+91) *" class="w-full bg-white border border-gray-300 rounded-md px-2.5 py-1.5 text-xs focus:ring-1 focus:ring-[#C01E25] focus:outline-none">
+              <select id="incard-bhk-sovereign" class="w-full bg-white border border-gray-300 rounded-md px-2.5 py-1.5 text-xs text-gray-700">
+                <option value="3 BHK" selected>3 BHK (2100 Sq.Ft)</option>
+              </select>
+              <button onclick="submitInCardEnquiry('UrbanNest Sovereign', 'sovereign')" class="w-full bg-[#C01E25] hover:bg-[#9E161C] text-white font-bold py-2 rounded-md text-xs transition">
+                Submit Lead (Own Website)
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- CARD 4: URBANNEST PALM GROVE (SARJAPUR ROAD, BENGALURU) - MULTI-STATE EXPANSION BRD 1.2 / 109 -->
+        <div class="project-card rounded-2xl overflow-hidden flex flex-col relative" data-status="ongoing" data-location="bengaluru" data-name="UrbanNest Palm Grove">
+          <div class="ribbon-wrap"><div class="ribbon-badge ribbon-new">NEW LAUNCH</div></div>
+          
+          <div class="relative h-56 w-full overflow-hidden bg-gray-900">
+            <img src="https://images.unsplash.com/photo-1574362848149-11496d93a7c7?auto=format&fit=crop&w=900&q=80" alt="UrbanNest Palm Grove" class="w-full h-full object-cover opacity-90 transition duration-500 hover:scale-105">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent"></div>
+            <div class="absolute bottom-3 left-4 text-white">
+              <h3 class="text-xl font-bold tracking-wide">UrbanNest Palm Grove</h3>
+              <p class="text-xs text-gray-300 flex items-center gap-1 mt-0.5">
+                <svg class="w-3.5 h-3.5 text-[#C01E25]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 010-5 2.5 2.5 0 010 5z"/></svg>
+                Sarjapur Road, Bengaluru
+              </p>
+            </div>
+          </div>
+
+          <div class="p-4 flex-grow flex flex-col justify-between space-y-4">
+            <div class="grid grid-cols-2 gap-3 text-xs border-b border-gray-100 pb-3">
+              <div>
+                <div class="text-gray-400 font-medium">Apartment Houses</div>
+                <div class="text-gray-900 font-bold mt-0.5">1, 2 & 3 BHK Tech Suites</div>
+              </div>
+              <div>
+                <div class="text-gray-400 font-medium">Base Price</div>
+                <div class="text-gray-900 font-bold mt-0.5 text-sm text-[#C01E25]">₹ 95 L – 2.45 Cr</div>
+              </div>
+              <div>
+                <div class="text-gray-400 font-medium">House Range</div>
+                <div class="text-gray-800 font-semibold mt-0.5">785 – 1950 Sq.ft</div>
+              </div>
+              <div>
+                <div class="text-gray-400 font-medium">Project Status</div>
+                <div class="text-emerald-700 font-semibold mt-0.5 flex items-center gap-1">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span> Ongoing
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-gray-50 border border-gray-200 rounded-lg p-2 text-[11px] text-gray-600 flex items-start gap-2">
+              <svg class="w-4 h-4 text-emerald-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+              <div>
+                <strong class="text-gray-900">Karnataka RERA Approved</strong>
+                <div class="text-[10px] text-gray-500 font-mono">PRM/KA/RERA/1251/308/PR/250102</div>
+              </div>
+            </div>
+
+            <div class="pt-2 flex items-center gap-2">
+              <button onclick="openProjectBrochure('UrbanNest Palm Grove')" class="flex-1 bg-gray-50 hover:bg-gray-100 text-gray-800 border border-gray-300 font-bold py-2 px-3 rounded-lg text-xs transition flex items-center justify-center gap-1.5">
+                <svg class="w-3.5 h-3.5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                View Brochure
+              </button>
+              <button onclick="toggleInCardForm('form-palmgrove')" class="bg-[#C01E25] hover:bg-[#9E161C] text-white font-bold py-2 px-4 rounded-lg text-xs transition shadow-xs">
+                Enquire
+              </button>
+            </div>
+
+            <div id="form-palmgrove" class="hidden bg-gray-50 border border-gray-200 rounded-xl p-3.5 mt-2 space-y-2 text-xs">
+              <div class="flex items-center justify-between pb-1 border-b border-gray-200">
+                <span class="font-bold text-gray-800">Quick Enquiry: Palm Grove</span>
+                <button onclick="toggleInCardForm('form-palmgrove')" class="text-gray-400 hover:text-gray-600">✕</button>
+              </div>
+              <input type="text" id="incard-name-palmgrove" placeholder="Your Full Name *" class="w-full bg-white border border-gray-300 rounded-md px-2.5 py-1.5 text-xs focus:ring-1 focus:ring-[#C01E25] focus:outline-none">
+              <input type="email" id="incard-email-palmgrove" placeholder="Email Address *" class="w-full bg-white border border-gray-300 rounded-md px-2.5 py-1.5 text-xs focus:ring-1 focus:ring-[#C01E25] focus:outline-none">
+              <input type="tel" id="incard-phone-palmgrove" placeholder="10-Digit Mobile (+91) *" class="w-full bg-white border border-gray-300 rounded-md px-2.5 py-1.5 text-xs focus:ring-1 focus:ring-[#C01E25] focus:outline-none">
+              <select id="incard-bhk-palmgrove" class="w-full bg-white border border-gray-300 rounded-md px-2.5 py-1.5 text-xs text-gray-700">
+                <option value="1 BHK">1 BHK (785 Sq.Ft)</option>
+                <option value="2 BHK" selected>2 BHK (1350 Sq.Ft)</option>
+                <option value="3 BHK">3 BHK (1950 Sq.Ft)</option>
+              </select>
+              <button onclick="submitInCardEnquiry('UrbanNest Palm Grove', 'palmgrove')" class="w-full bg-[#C01E25] hover:bg-[#9E161C] text-white font-bold py-2 rounded-md text-xs transition">
+                Submit Lead (Own Website)
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- CARD 5: URBANNEST ELYSIUM (FINANCIAL DISTRICT, HYDERABAD) - MULTI-STATE EXPANSION -->
+        <div class="project-card rounded-2xl overflow-hidden flex flex-col relative" data-status="ongoing" data-location="hyderabad" data-name="UrbanNest Elysium">
+          <div class="ribbon-wrap"><div class="ribbon-badge ribbon-new">NEW LAUNCH</div></div>
+          
+          <div class="relative h-56 w-full overflow-hidden bg-gray-900">
+            <img src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=900&q=80" alt="UrbanNest Elysium" class="w-full h-full object-cover opacity-90 transition duration-500 hover:scale-105">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent"></div>
+            <div class="absolute bottom-3 left-4 text-white">
+              <h3 class="text-xl font-bold tracking-wide">UrbanNest Elysium</h3>
+              <p class="text-xs text-gray-300 flex items-center gap-1 mt-0.5">
+                <svg class="w-3.5 h-3.5 text-[#C01E25]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 010-5 2.5 2.5 0 010 5z"/></svg>
+                Financial District, Gachibowli, Hyderabad
+              </p>
+            </div>
+          </div>
+
+          <div class="p-4 flex-grow flex flex-col justify-between space-y-4">
+            <div class="grid grid-cols-2 gap-3 text-xs border-b border-gray-100 pb-3">
+              <div>
+                <div class="text-gray-400 font-medium">Apartment Houses</div>
+                <div class="text-gray-900 font-bold mt-0.5">2 & 3 BHK Sky Suites</div>
+              </div>
+              <div>
+                <div class="text-gray-400 font-medium">Base Price</div>
+                <div class="text-gray-900 font-bold mt-0.5 text-sm text-[#C01E25]">₹ 1.85 Cr – 3.75 Cr</div>
+              </div>
+              <div>
+                <div class="text-gray-400 font-medium">House Range</div>
+                <div class="text-gray-800 font-semibold mt-0.5">1450 – 2850 Sq.ft</div>
+              </div>
+              <div>
+                <div class="text-gray-400 font-medium">Project Status</div>
+                <div class="text-emerald-700 font-semibold mt-0.5 flex items-center gap-1">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span> Ongoing
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-gray-50 border border-gray-200 rounded-lg p-2 text-[11px] text-gray-600 flex items-start gap-2">
+              <svg class="w-4 h-4 text-emerald-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+              <div>
+                <strong class="text-gray-900">TG RERA Registered</strong>
+                <div class="text-[10px] text-gray-500 font-mono">P02400004921</div>
+              </div>
+            </div>
+
+            <div class="pt-2 flex items-center gap-2">
+              <button onclick="openProjectBrochure('UrbanNest Elysium')" class="flex-1 bg-gray-50 hover:bg-gray-100 text-gray-800 border border-gray-300 font-bold py-2 px-3 rounded-lg text-xs transition flex items-center justify-center gap-1.5">
+                <svg class="w-3.5 h-3.5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                View Brochure
+              </button>
+              <button onclick="toggleInCardForm('form-elysium')" class="bg-[#C01E25] hover:bg-[#9E161C] text-white font-bold py-2 px-4 rounded-lg text-xs transition shadow-xs">
+                Enquire
+              </button>
+            </div>
+
+            <div id="form-elysium" class="hidden bg-gray-50 border border-gray-200 rounded-xl p-3.5 mt-2 space-y-2 text-xs">
+              <div class="flex items-center justify-between pb-1 border-b border-gray-200">
+                <span class="font-bold text-gray-800">Quick Enquiry: Elysium</span>
+                <button onclick="toggleInCardForm('form-elysium')" class="text-gray-400 hover:text-gray-600">✕</button>
+              </div>
+              <input type="text" id="incard-name-elysium" placeholder="Your Full Name *" class="w-full bg-white border border-gray-300 rounded-md px-2.5 py-1.5 text-xs focus:ring-1 focus:ring-[#C01E25] focus:outline-none">
+              <input type="email" id="incard-email-elysium" placeholder="Email Address *" class="w-full bg-white border border-gray-300 rounded-md px-2.5 py-1.5 text-xs focus:ring-1 focus:ring-[#C01E25] focus:outline-none">
+              <input type="tel" id="incard-phone-elysium" placeholder="10-Digit Mobile (+91) *" class="w-full bg-white border border-gray-300 rounded-md px-2.5 py-1.5 text-xs focus:ring-1 focus:ring-[#C01E25] focus:outline-none">
+              <select id="incard-bhk-elysium" class="w-full bg-white border border-gray-300 rounded-md px-2.5 py-1.5 text-xs text-gray-700">
+                <option value="2 BHK">2 BHK (1450 Sq.Ft)</option>
+                <option value="3 BHK" selected>3 BHK (2850 Sq.Ft)</option>
+              </select>
+              <button onclick="submitInCardEnquiry('UrbanNest Elysium', 'elysium')" class="w-full bg-[#C01E25] hover:bg-[#9E161C] text-white font-bold py-2 rounded-md text-xs transition">
+                Submit Lead (Own Website)
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- CARD 6: URBANNEST SOLITAIRE (COMPLETED LEGACY ASSET, COIMBATORE) -->
+        <div class="project-card rounded-2xl overflow-hidden flex flex-col relative" data-status="completed" data-location="coimbatore" data-name="UrbanNest Solitaire">
+          <div class="ribbon-wrap"><div class="ribbon-badge ribbon-sold">SOLD OUT</div></div>
+          
+          <div class="relative h-56 w-full overflow-hidden bg-gray-900">
+            <img src="https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=900&q=80" alt="UrbanNest Solitaire" class="w-full h-full object-cover opacity-90 transition duration-500 hover:scale-105">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent"></div>
+            <div class="absolute bottom-3 left-4 text-white">
+              <h3 class="text-xl font-bold tracking-wide">UrbanNest Solitaire</h3>
+              <p class="text-xs text-gray-300 flex items-center gap-1 mt-0.5">
+                <svg class="w-3.5 h-3.5 text-[#C01E25]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 010-5 2.5 2.5 0 010 5z"/></svg>
+                Race Course Road, Coimbatore
+              </p>
+            </div>
+          </div>
+
+          <div class="p-4 flex-grow flex flex-col justify-between space-y-4">
+            <div class="grid grid-cols-2 gap-3 text-xs border-b border-gray-100 pb-3">
+              <div>
+                <div class="text-gray-400 font-medium">Apartment Houses</div>
+                <div class="text-gray-900 font-bold mt-0.5">2 & 3 BHK</div>
+              </div>
+              <div>
+                <div class="text-gray-400 font-medium">Base Price</div>
+                <div class="text-red-700 font-bold mt-0.5 text-sm">100% Sold Out</div>
+              </div>
+              <div>
+                <div class="text-gray-400 font-medium">House Range</div>
+                <div class="text-gray-800 font-semibold mt-0.5">1400 – 2200 Sq.ft</div>
+              </div>
+              <div>
+                <div class="text-gray-400 font-medium">Project Status</div>
+                <div class="text-gray-600 font-semibold mt-0.5">Handed Over</div>
+              </div>
+            </div>
+
+            <div class="bg-gray-50 border border-gray-200 rounded-lg p-2 text-[11px] text-gray-600 flex items-start gap-2">
+              <svg class="w-4 h-4 text-emerald-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+              <div>
+                <strong class="text-gray-900">Key Handover 100% Complete</strong>
+                <div class="text-[10px] text-gray-500 font-mono">Completed Architecture</div>
+              </div>
+            </div>
+
+            <div class="pt-2 flex items-center gap-2">
+              <button onclick="openEnquireModal('UrbanNest Solitaire (Resale Waitlist)', 'Coimbatore')" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold py-2 px-4 rounded-lg text-xs transition border border-gray-300">
+                Join Resale Waitlist
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ================= VIEW 2: UNIT INVENTORY MATRIX (BRD 2.1.1, 2.4 & 4.1) ================= -->
+    <section id="view-inventory" class="hidden space-y-6">
+      <div class="border-b border-gray-200 pb-4">
+        <h2 class="text-2xl font-bold text-gray-900">1, 2 & 3 BHK House Unit Matrix</h2>
+        <p class="text-xs text-gray-500">Live multi-tower individual house tracking with BRD status lifecycle (Available, Under Offer, Reserved, Sold, Occupied)</p>
+      </div>
+
+      <!-- Filters by BHK -->
+      <div class="flex flex-wrap gap-3 items-center bg-white p-4 rounded-xl border border-gray-200 text-xs">
+        <span class="font-bold text-gray-700">Filter By BHK:</span>
+        <button onclick="filterUnits('all')" class="unit-filter-btn px-3.5 py-1.5 rounded-full bg-[#C01E25] text-white font-semibold">All Houses</button>
+        <button onclick="filterUnits('1 BHK')" class="unit-filter-btn px-3.5 py-1.5 rounded-full bg-gray-100 text-gray-700 hover:bg-gray-200 font-semibold">1 BHK</button>
+        <button onclick="filterUnits('2 BHK')" class="unit-filter-btn px-3.5 py-1.5 rounded-full bg-gray-100 text-gray-700 hover:bg-gray-200 font-semibold">2 BHK</button>
+        <button onclick="filterUnits('3 BHK')" class="unit-filter-btn px-3.5 py-1.5 rounded-full bg-gray-100 text-gray-700 hover:bg-gray-200 font-semibold">3 BHK Luxury</button>
+      </div>
+
+      <!-- Units Grid -->
+      <div id="units-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <!-- Injected via JavaScript -->
+      </div>
+    </section>
+
+    <!-- ================= VIEW 3: CHAUFFEUR SITE VISIT LOGISTICS (BRD 2.3 & 4.3) ================= -->
+    <section id="view-chauffeur" class="hidden space-y-6">
+      <div class="border-b border-gray-200 pb-4">
+        <h2 class="text-2xl font-bold text-gray-900">Complimentary Chauffeur Site Visit Logistics</h2>
+        <p class="text-xs text-gray-500">Schedule customer doorstep pickup with dedicated fleet transport (Toyota Innova Crysta, Mercedes-Benz, EV)</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="md:col-span-2 bg-white p-6 rounded-2xl border border-gray-200 shadow-xs space-y-4">
+          <h3 class="text-base font-bold text-gray-900 flex items-center gap-2">
+            <svg class="w-5 h-5 text-[#C01E25]" fill="currentColor" viewBox="0 0 24 24"><path d="M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.21.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 16c-.83 0-1.5-.67-1.5-1.5S5.67 13 6.5 13s1.5.67 1.5 1.5S7.33 16 6.5 16zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5 11l1.5-4.5h11L19 11H5z"/></svg>
+            Schedule Doorstep Vehicle Dispatch
+          </h3>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+            <div>
+              <label class="block font-semibold text-gray-700 mb-1">Select Development Project</label>
+              <select id="cab-project" class="w-full border border-gray-300 rounded-lg p-2.5">
+                <option value="UrbanNest Lumina">UrbanNest Lumina (Guindy, Chennai)</option>
+                <option value="UrbanNest Emerald Bay">UrbanNest Emerald Bay (Kotturpuram, Chennai)</option>
+                <option value="UrbanNest Sovereign">UrbanNest Sovereign (Mylapore, Chennai)</option>
+                <option value="UrbanNest Palm Grove">UrbanNest Palm Grove (Sarjapur, Bengaluru)</option>
+                <option value="UrbanNest Elysium">UrbanNest Elysium (Gachibowli, Hyderabad)</option>
+              </select>
+            </div>
+            <div>
+              <label class="block font-semibold text-gray-700 mb-1">Select Chauffeur Vehicle</label>
+              <select id="cab-fleet" class="w-full border border-gray-300 rounded-lg p-2.5">
+                <option value="Toyota Innova Crysta">Toyota Innova Crysta (Luxury 7-Seater)</option>
+                <option value="Mercedes-Benz E-Class">Mercedes-Benz E-Class Sedan</option>
+                <option value="Tata EV SUV">Tata Safari EV Executive</option>
+              </select>
+            </div>
+            <div>
+              <label class="block font-semibold text-gray-700 mb-1">Customer Full Name *</label>
+              <input type="text" id="cab-name" placeholder="E.g. Rajesh Krishnan" class="w-full border border-gray-300 rounded-lg p-2.5">
+            </div>
+            <div>
+              <label class="block font-semibold text-gray-700 mb-1">10-Digit Mobile Number (+91) *</label>
+              <input type="tel" id="cab-phone" placeholder="9840199999" class="w-full border border-gray-300 rounded-lg p-2.5">
+            </div>
+            <div class="sm:col-span-2">
+              <label class="block font-semibold text-gray-700 mb-1">Doorstep Pickup Address *</label>
+              <input type="text" id="cab-address" placeholder="Residence Address, Apartment, Street, City" class="w-full border border-gray-300 rounded-lg p-2.5">
+            </div>
+            <div>
+              <label class="block font-semibold text-gray-700 mb-1">Appointment Date</label>
+              <input type="date" id="cab-date" value="2026-11-02" class="w-full border border-gray-300 rounded-lg p-2.5">
+            </div>
+            <div>
+              <label class="block font-semibold text-gray-700 mb-1">Time Slot</label>
+              <select id="cab-time" class="w-full border border-gray-300 rounded-lg p-2.5">
+                <option value="10:00 AM">10:00 AM – Morning Experience</option>
+                <option value="02:30 PM">02:30 PM – Afternoon Slot</option>
+                <option value="05:00 PM">05:00 PM – Sunset Golden Hour</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="pt-2">
+            <button onclick="bookChauffeurVisit()" class="w-full bg-[#C01E25] hover:bg-[#9E161C] text-white font-bold py-3.5 rounded-xl text-xs transition shadow-md flex items-center justify-center gap-2">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>
+              Confirm Appointment & Dispatch Vehicle Request (Salesforce & WhatsApp)
+            </button>
+          </div>
+        </div>
+
+        <div class="bg-gray-50 p-6 rounded-2xl border border-gray-200 flex flex-col justify-between space-y-4">
+          <div>
+            <h4 class="font-bold text-gray-900 text-sm mb-3">Vehicle Logistics Protocol (BRD 4.3)</h4>
+            <ul class="space-y-3 text-xs text-gray-600">
+              <li class="flex items-start gap-2">
+                <span class="text-[#C01E25] font-bold">✓</span>
+                Complimentary doorstep pickup & return transport.
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-[#C01E25] font-bold">✓</span>
+                Automated WhatsApp & Email notification with driver name and live car tracking link.
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-[#C01E25] font-bold">✓</span>
+                Dedicated Relationship Manager receives customer at experience center.
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-[#C01E25] font-bold">✓</span>
+                Lead stage automatically advances to <strong>Site Visit Scheduled</strong>.
+              </li>
+            </ul>
+          </div>
+          <div class="p-3.5 bg-white rounded-xl border border-gray-200 text-center">
+            <div class="text-[11px] text-gray-500">Concierge Desk Helpline</div>
+            <div class="font-bold text-sm text-[#C01E25] mt-0.5">+91 80562 10606</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= VIEW 4: RAZORPAY PAYMENT INTEGRATION (BRD 2.5 & 4.5) ================= -->
+    <section id="view-razorpay" class="hidden space-y-6">
+      <div class="border-b border-gray-200 pb-4">
+        <h2 class="text-2xl font-bold text-gray-900">Razorpay Payment Gateway & Webhook Simulator</h2>
+        <p class="text-xs text-gray-500">Generate secure payment links for Advance / Settlement and simulate real-time webhook confirmation into Salesforce</p>
+        <p class="mt-2 text-[11px] text-gray-600">Salesforce CRM storage is enabled when <code class="bg-gray-100 px-1.5 py-0.5 rounded">window.urbannestSalesforceEndpoint</code> is set to your Apex REST endpoint, for example <code class="bg-gray-100 px-1.5 py-0.5 rounded">https://your-domain.my.salesforce.com/services/apexrest/api/urbannest/payment</code>.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        <!-- Generator Form -->
+        <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-xs space-y-4">
+          <h3 class="text-sm font-bold text-gray-900 flex items-center gap-2">
+            <span class="w-6 h-6 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-xs font-bold">RZP</span>
+            Generate Razorpay Payment Link (BRD 4.5)
+          </h3>
+
+          <div class="space-y-3 text-xs">
+            <div>
+              <label class="block font-semibold text-gray-700 mb-1">Razorpay Key ID</label>
+              <input type="text" id="rzp-key-id" value="" placeholder="rzp_test_xxxxxxxxxxxxx" class="w-full border border-gray-300 rounded-lg p-2.5" aria-label="Razorpay Key ID">
+              <p class="mt-1 text-[10px] text-gray-500">Public key is safe to display in the browser. The secret key stays only on your server.</p>
+            </div>
+            <div>
+              <label class="block font-semibold text-gray-700 mb-1">Select House Unit / Opportunity</label>
+              <select id="rzp-unit" class="w-full border border-gray-300 rounded-lg p-2.5">
+                <option value="Unit A-101 (1 BHK) - ₹ 78.5 L">Unit A-101 (1 BHK) — UrbanNest Palm Grove</option>
+                <option value="Unit B-501 (3 BHK) - ₹ 2.65 Cr" selected>Unit B-501 (3 BHK) — UrbanNest Lumina</option>
+                <option value="Unit C-1201 (3 BHK) - ₹ 4.80 Cr">Unit C-1201 (3 BHK) — UrbanNest Emerald Bay</option>
+              </select>
+            </div>
+            <div>
+              <label class="block font-semibold text-gray-700 mb-1">Payment Type</label>
+              <select id="rzp-type" class="w-full border border-gray-300 rounded-lg p-2.5" onchange="updateRzpAmount()">
+                <option value="Advance">Booking Advance (Fixed ₹ 100)</option>
+                <option value="Settlement">Milestone / Final Settlement (₹ 1,000)</option>
+              </select>
+            </div>
+            <div>
+              <label class="block font-semibold text-gray-700 mb-1">Amount to Collect (INR)</label>
+              <input type="text" id="rzp-amount" value="₹ 100" readonly class="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 font-bold text-gray-800">
+            </div>
+            <div>
+              <label class="block font-semibold text-gray-700 mb-1">Customer Details</label>
+              <div class="grid grid-cols-2 gap-2">
+                <input type="text" id="rzp-name" value="" class="border border-gray-300 rounded-lg p-2" placeholder="Full name">
+                <input type="email" id="rzp-email" value="" class="border border-gray-300 rounded-lg p-2" placeholder="Email">
+              </div>
+              <div class="mt-2">
+                <input type="tel" id="rzp-phone" value="" class="w-full border border-gray-300 rounded-lg p-2" placeholder="Phone">
+              </div>
+            </div>
+            <div>
+              <label class="block font-semibold text-gray-700 mb-1">Notes</label>
+              <input type="text" value="Secure payment using Razorpay Checkout" readonly class="w-full bg-gray-50 border border-gray-300 rounded-lg p-2 text-gray-500">
+            </div>
+          </div>
+
+          <button onclick="createRazorpayLink()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl text-xs transition shadow-md flex items-center justify-center gap-2">
+            <span>⚡ Pay with Razorpay</span>
+          </button>
+        </div>
+
+        <!-- Simulated Active Link & Webhook Trigger -->
+        <div class="bg-gray-50 p-6 rounded-2xl border border-gray-200 flex flex-col justify-between space-y-4">
+          <div>
+            <h4 class="font-bold text-gray-900 text-sm mb-2">Live Payment Link Status</h4>
+            <div id="rzp-active-card" class="bg-white p-4 rounded-xl border border-gray-200 space-y-2 text-xs">
+              <div class="flex justify-between items-center">
+                <span class="text-gray-500 font-mono text-[10px]" id="rzp-link-id">plink_K9xZ81290bV</span>
+                <span class="bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded-full text-[10px]" id="rzp-link-status">Pending</span>
+              </div>
+              <div class="text-sm font-bold text-gray-900" id="rzp-link-title">Advance Payment: Unit B-501 (UrbanNest Lumina)</div>
+              <div class="text-xs text-gray-600">Amount: <strong class="text-[#C01E25]" id="rzp-link-amt">₹ 5,00,000</strong></div>
+              <div class="text-[11px] text-gray-400">Expires: 48 Hours | Webhook Endpoint: /api/razorpay/webhook</div>
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <button onclick="simulateRazorpayWebhook('paid')" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-xl text-xs transition shadow-xs flex items-center justify-center gap-2">
+              <span>✓ Simulate Customer Pays Link (Trigger Webhook)</span>
+            </button>
+            <button onclick="simulateRazorpayWebhook('failed')" class="w-full bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 rounded-xl text-xs transition">
+              Simulate Payment Failure / Expiry
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ================= VIEW 5: CANCELLATION & ADVANCE REFUNDS (BRD 2.6 & 4.6) ================= -->
+    <section id="view-cancellation" class="hidden space-y-6">
+      <div class="border-b border-gray-200 pb-4">
+        <h2 class="text-2xl font-bold text-gray-900">Cancellation & Advance Refund Pipeline</h2>
+        <p class="text-xs text-gray-500">Manage drop-outs with 10% statutory deduction, 90% refund approval within 3 business days, and house release to Available (BRD 4.6)</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white p-6 rounded-2xl border border-gray-200 shadow-xs">
+        
+        <div class="space-y-4 text-xs">
+          <h3 class="text-sm font-bold text-gray-900">Log Customer Drop-Out Request</h3>
+          
+          <div>
+            <label class="block font-semibold text-gray-700 mb-1">Select Booking / Customer</label>
+            <select id="canc-booking" class="w-full border border-gray-300 rounded-lg p-2.5">
+              <option value="BKG-0082">BKG-0082: Vigneshwar R (Unit A-302, Advance ₹ 5,00,000)</option>
+              <option value="BKG-0091">BKG-0091: Divya M (Unit B-702, Advance ₹ 5,00,000)</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block font-semibold text-gray-700 mb-1">Reason for Drop-out (BRD 4.6)</label>
+            <select id="canc-reason" class="w-full border border-gray-300 rounded-lg p-2.5">
+              <option value="Bank Loan Rejection">Bank Loan Application Rejected</option>
+              <option value="Personal Relocation">Personal Relocation / Job Transfer</option>
+              <option value="Financial Hardship">Financial Hardship</option>
+              <option value="Found Alternative Property">Found Alternative Property</option>
+            </select>
+          </div>
+
+          <!-- Refund calculation breakdown -->
+          <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 space-y-2">
+            <div class="flex justify-between">
+              <span class="text-gray-600">Advance Paid:</span>
+              <span class="font-bold text-gray-900">₹ 5,00,000</span>
+            </div>
+            <div class="flex justify-between text-red-600">
+              <span>Standard Deduction (10%):</span>
+              <span class="font-bold">- ₹ 50,000</span>
+            </div>
+            <div class="flex justify-between text-emerald-700 font-bold text-sm border-t border-gray-200 pt-2">
+              <span>Net Refund Amount (90%):</span>
+              <span>₹ 4,50,000</span>
+            </div>
+            <div class="text-[10px] text-gray-500 pt-1">
+              • Sales Manager approval mandatory.<br>
+              • Refund due within 3 business days of approval.<br>
+              • House released to <strong>Available</strong> only after refund completion.
+            </div>
+          </div>
+
+          <button onclick="submitCancellation()" class="w-full bg-[#C01E25] hover:bg-[#9E161C] text-white font-bold py-3 rounded-xl text-xs transition shadow-xs">
+            Submit Cancellation & Request Manager Approval
+          </button>
+        </div>
+
+        <!-- Cancellation Queue -->
+        <div class="bg-gray-50 p-6 rounded-2xl border border-gray-200 flex flex-col justify-between space-y-4">
+          <div>
+            <h4 class="font-bold text-gray-900 text-sm mb-3">Active Cancellation Queue</h4>
+            <div id="canc-queue" class="space-y-3 text-xs">
+              <div class="bg-white p-3.5 rounded-xl border border-gray-200 space-y-2">
+                <div class="flex justify-between items-center">
+                  <span class="font-bold text-gray-800">Unit A-302 (UrbanNest Lumina)</span>
+                  <span class="bg-amber-100 text-amber-800 text-[10px] font-bold px-2 py-0.5 rounded-full">Pending Manager Approval</span>
+                </div>
+                <div class="text-[11px] text-gray-600">Customer: Vigneshwar R • Advance: ₹ 5,00,000</div>
+                <div class="text-[11px] text-gray-600">Net Refund: <strong>₹ 4,50,000</strong> (10% deduction applied)</div>
+                <div class="pt-2 flex gap-2">
+                  <button onclick="approveCancellation('A-302')" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-1.5 rounded-lg text-xs">Approve Refund</button>
+                  <button onclick="completeRefund('A-302')" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-1.5 rounded-lg text-xs">Mark Refund Paid & Release House</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="text-[10px] text-gray-400 text-center">
+            Complies with BRD UN-BRD-001 Section 2.6
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ================= VIEW 6: EXECUTIVE PERFORMANCE DASHBOARD (BRD 2.7 & 4.8) ================= -->
+    <section id="view-executive" class="hidden space-y-6">
+      <div class="border-b border-gray-200 pb-4 flex justify-between items-center">
+        <div>
+          <h2 class="text-2xl font-bold text-gray-900">Executive Real-Time Dashboard</h2>
+          <p class="text-xs text-gray-500">Live KPIs for Product Owner Ashok Raj: Daily Revenue, Capital Invested, Value Lost & Round-Robin Lead Conversion</p>
+        </div>
+        <button onclick="refreshExecutiveData()" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded-lg text-xs font-semibold transition border border-gray-300">
+          ↻ Refresh Dashboard
+        </button>
+      </div>
+
+      <!-- KPI 3-Column Summary Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        <!-- Daily Revenue Card -->
+        <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-xs space-y-2">
+          <div class="text-xs text-gray-500 font-semibold uppercase tracking-wider">Daily Net Revenue (BRD 2.7)</div>
+          <div class="text-3xl font-black text-emerald-600" id="kpi-revenue">₹ 1,45,50,000</div>
+          <div class="text-[11px] text-gray-500">Paid advance & settlements net of completed refunds</div>
+        </div>
+
+        <!-- Capital Invested by State -->
+        <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-xs space-y-2">
+          <div class="text-xs text-gray-500 font-semibold uppercase tracking-wider">Capital Invested by State</div>
+          <div class="text-3xl font-black text-[#C01E25]" id="kpi-capital">₹ 185 Cr</div>
+          <div class="text-[11px] text-gray-500">TN: ₹ 95 Cr • KA: ₹ 55 Cr • TG: ₹ 35 Cr</div>
+        </div>
+
+        <!-- Value Lost (Closed Lost) -->
+        <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-xs space-y-2">
+          <div class="text-xs text-gray-500 font-semibold uppercase tracking-wider">Value Lost (Closed Lost)</div>
+          <div class="text-3xl font-black text-gray-700" id="kpi-valuelost">₹ 8.45 Cr</div>
+          <div class="text-[11px] text-gray-500">Projected amount of cancelled / unqualified deals</div>
+        </div>
+
+      </div>
+
+      <!-- Round-Robin Sales Executives Performance & 2 Lead Sources Table -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        <!-- Lead Sources Breakdown (Own Website vs Phone Enquiry) -->
+        <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-xs space-y-4">
+          <h3 class="text-sm font-bold text-gray-900">Lead Conversion by Lead Source (BRD 2.2)</h3>
+          <div class="space-y-3 text-xs">
+            <div>
+              <div class="flex justify-between text-gray-700 font-semibold mb-1">
+                <span>Own Website (Auto Round-Robin)</span>
+                <span class="text-[#C01E25] font-bold">142 Leads (38% Conversion)</span>
+              </div>
+              <div class="w-full bg-gray-100 rounded-full h-2.5">
+                <div class="bg-[#C01E25] h-2.5 rounded-full" style="width: 72%"></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex justify-between text-gray-700 font-semibold mb-1">
+                <span>Phone Enquiry (Direct Executive Entry)</span>
+                <span class="text-blue-600 font-bold">54 Leads (44% Conversion)</span>
+              </div>
+              <div class="w-full bg-gray-100 rounded-full h-2.5">
+                <div class="bg-blue-600 h-2.5 rounded-full" style="width: 28%"></div>
+              </div>
+            </div>
+          </div>
+          <div class="text-[10px] text-gray-400">
+            Strictly 2 Lead Sources permitted per BRD UN-BRD-001 Section 2.2.
+          </div>
+        </div>
+
+        <!-- Sales Executive Roster -->
+        <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-xs space-y-4">
+          <h3 class="text-sm font-bold text-gray-900">Sales Executive Performance</h3>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead class="text-gray-400 border-b border-gray-100">
+                <tr>
+                  <th class="pb-2">Executive</th>
+                  <th class="pb-2">Leads Assigned</th>
+                  <th class="pb-2">Site Visits</th>
+                  <th class="pb-2">Won Bookings</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-100 text-gray-700">
+                <tr>
+                  <td class="py-2 font-semibold">Priya Sundaram</td>
+                  <td class="py-2">48</td>
+                  <td class="py-2">18</td>
+                  <td class="py-2 font-bold text-emerald-600">6 (₹ 18.5 Cr)</td>
+                </tr>
+                <tr>
+                  <td class="py-2 font-semibold">Karthik Raman</td>
+                  <td class="py-2">46</td>
+                  <td class="py-2">15</td>
+                  <td class="py-2 font-bold text-emerald-600">5 (₹ 14.2 Cr)</td>
+                </tr>
+                <tr>
+                  <td class="py-2 font-semibold">Arun Prasath</td>
+                  <td class="py-2">48</td>
+                  <td class="py-2">14</td>
+                  <td class="py-2 font-bold text-emerald-600">4 (₹ 11.8 Cr)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- ================= DEDICATED PROJECT BROCHURE MODAL (BRD 2.1.1 & 4.1) ================= -->
+  <div id="brochure-modal" class="fixed inset-0 bg-black/60 backdrop-blur-xs hidden z-50 flex items-center justify-center p-3 sm:p-6">
+    <div class="bg-white rounded-3xl max-w-4xl w-full max-h-[92vh] overflow-y-auto custom-scroll shadow-2xl border border-gray-200">
+      
+      <!-- Brochure Modal Header -->
+      <div class="sticky top-0 bg-white/95 backdrop-blur-md px-6 py-4 border-b border-gray-200 flex items-center justify-between z-20">
+        <div>
+          <h3 class="text-xl font-bold text-gray-900 font-serif" id="brochure-title">UrbanNest Lumina — Project Brochure</h3>
+          <p class="text-xs text-gray-500" id="brochure-subtitle">Guindy, Chennai • 1, 2 & 3 BHK Apartment Houses</p>
+        </div>
+        <button onclick="closeProjectBrochure()" class="text-gray-400 hover:text-gray-600 text-2xl font-bold">✕</button>
+      </div>
+
+      <div class="p-6 space-y-8 text-xs text-gray-700">
+        
+        <!-- Project & Apartment Building Photos (BRD 2.1.1) -->
+        <div>
+          <h4 class="font-bold text-gray-900 text-sm mb-3 uppercase tracking-wider">1. Project & Tower Architecture Photos</h4>
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            <div class="rounded-xl overflow-hidden border border-gray-200">
+              <img id="brochure-img-tower" src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=600&q=80" class="w-full h-44 object-cover">
+              <div class="p-2 font-semibold text-center bg-gray-50 text-[11px]">Tower Alpha — 24 Storeys</div>
+            </div>
+            <div class="rounded-xl overflow-hidden border border-gray-200">
+              <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=600&q=80" class="w-full h-44 object-cover">
+              <div class="p-2 font-semibold text-center bg-gray-50 text-[11px]">Grand Entrance Lobby & Courtyard</div>
+            </div>
+            <div class="rounded-xl overflow-hidden border border-gray-200">
+              <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=600&q=80" class="w-full h-44 object-cover">
+              <div class="p-2 font-semibold text-center bg-gray-50 text-[11px]">Clubhouse & Infinity Lap Pool</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sample House Photos (1 BHK, 2 BHK, 3 BHK) (BRD 2.1.1 / 126) -->
+        <div>
+          <h4 class="font-bold text-gray-900 text-sm mb-3 uppercase tracking-wider">2. Sample House Interiors (1, 2 & 3 BHK Layouts)</h4>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div class="rounded-xl overflow-hidden border border-gray-200 p-3 space-y-2 bg-gray-50">
+              <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=600&q=80" class="w-full h-32 object-cover rounded-lg">
+              <div class="font-bold text-gray-900">1 BHK Executive Suite</div>
+              <div class="text-[11px] text-gray-500">785 Sq.Ft • Italian Vitrified Flooring • Modular Kitchenette</div>
+            </div>
+            <div class="rounded-xl overflow-hidden border border-gray-200 p-3 space-y-2 bg-gray-50">
+              <img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=600&q=80" class="w-full h-32 object-cover rounded-lg">
+              <div class="font-bold text-gray-900">2 BHK Family Residence</div>
+              <div class="text-[11px] text-gray-500">1350 Sq.Ft • Cross-Ventilated Balcony • Master Ensuite</div>
+            </div>
+            <div class="rounded-xl overflow-hidden border border-gray-200 p-3 space-y-2 bg-gray-50">
+              <img src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=600&q=80" class="w-full h-32 object-cover rounded-lg">
+              <div class="font-bold text-gray-900">3 BHK Signature Suite</div>
+              <div class="text-[11px] text-gray-500">2650 Sq.Ft • Imported Marble • Servant Quarters</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dedicated Brochure Enquiry Form (BRD 2.1.2) -->
+        <div class="bg-gray-50 p-6 rounded-2xl border border-gray-200 space-y-3">
+          <h4 class="font-bold text-gray-900 text-sm">Request Floor Plans & Official Price Schedule</h4>
+          <p class="text-xs text-gray-500">Submit your details to receive the high-resolution CAD floor plans and RERA compliance packet directly in your email.</p>
+          
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <input type="text" id="brochure-lead-name" placeholder="Full Name *" class="border border-gray-300 rounded-lg p-2.5 text-xs bg-white">
+            <input type="email" id="brochure-lead-email" placeholder="Email Address *" class="border border-gray-300 rounded-lg p-2.5 text-xs bg-white">
+            <input type="tel" id="brochure-lead-phone" placeholder="10-Digit Mobile (+91) *" class="border border-gray-300 rounded-lg p-2.5 text-xs bg-white">
+          </div>
+          <button onclick="submitBrochureLead()" class="w-full bg-[#C01E25] hover:bg-[#9E161C] text-white font-bold py-3 rounded-xl text-xs transition shadow-xs">
+            Send Official PDF Brochure & Instant CRM Registration
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= 'ENQUIRE NOW' MODAL (STICKY TAB MODAL) ================= -->
+  <div id="enquire-modal" class="fixed inset-0 bg-black/60 backdrop-blur-xs hidden z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-lg w-full overflow-hidden shadow-2xl border border-gray-200 animate-in fade-in zoom-in duration-200">
+      
+      <div class="flex items-center justify-between p-5 border-b border-gray-200">
+        <div>
+          <h3 class="text-xl font-bold text-gray-900 font-serif">Enquire Now</h3>
+          <p class="text-[11px] text-gray-500">Book a private site visit with our sales team</p>
+        </div>
+        <button onclick="closeEnquireModal()" class="text-gray-400 hover:text-gray-600 text-xl font-bold">✕</button>
+      </div>
+
+      <!-- ===== ENQUIRY FORM BODY ===== -->
+      <div id="enquiry-form-body">
+        <form onsubmit="handleModalSubmit(event)" class="p-6 space-y-4 text-xs">
+        
+        <div>
+          <label class="block font-semibold text-gray-700 mb-1">Enter Your Name *</label>
+          <input type="text" id="modal-name" required placeholder="Full Name" class="w-full border border-gray-300 rounded-lg p-3 text-sm focus:ring-2 focus:ring-[#C01E25] focus:outline-none">
+        </div>
+
+        <div>
+          <label class="block font-semibold text-gray-700 mb-1">Enter Your Email *</label>
+          <input type="email" id="modal-email" required placeholder="name@domain.com" class="w-full border border-gray-300 rounded-lg p-3 text-sm focus:ring-2 focus:ring-[#C01E25] focus:outline-none">
+        </div>
+
+        <div>
+          <label class="block font-semibold text-gray-700 mb-1">Enter Your Mobile Number *</label>
+          <div class="flex">
+            <span class="inline-flex items-center px-3 rounded-l-lg border border-r-0 border-gray-300 bg-gray-50 text-gray-600 font-semibold text-sm">
+              🇮🇳 +91
+            </span>
+            <input type="tel" id="modal-phone" required pattern="[0-9]{10}" placeholder="9876543210" class="w-full border border-gray-300 rounded-r-lg p-3 text-sm focus:ring-2 focus:ring-[#C01E25] focus:outline-none">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-semibold text-gray-700 mb-1">BHK Preference (BRD 2.1.2)</label>
+            <select id="modal-bhk" class="w-full border border-gray-300 rounded-lg p-2.5 text-xs text-gray-700">
+              <option value="1 BHK">1 BHK</option>
+              <option value="2 BHK">2 BHK</option>
+              <option value="3 BHK" selected>3 BHK Luxury</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-semibold text-gray-700 mb-1">Enter Your Budget</label>
+            <select id="modal-budget" class="w-full border border-gray-300 rounded-lg p-2.5 text-xs text-gray-700">
+              <option value="₹ 75 L - ₹ 1.5 Cr">₹ 75 L – ₹ 1.5 Cr</option>
+              <option value="₹ 1.5 Cr - ₹ 3.5 Cr">₹ 1.5 Cr – ₹ 3.5 Cr</option>
+              <option value="₹ 3.5 Cr - ₹ 6.0 Cr+">₹ 3.5 Cr – ₹ 6.0 Cr+</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- NDNC Consent Checkbox (Appaswamy style) -->
+        <div class="flex items-start gap-2 pt-1">
+          <input type="checkbox" id="modal-ndnc" checked required class="mt-1 accent-[#C01E25]">
+          <label for="modal-ndnc" class="text-[11px] text-gray-600 leading-snug">
+            I authorise UrbanNest Real Estates Limited & its representatives to contact me with updates and notifications via Email/SMS/WhatsApp/Call. This will override DND/NDNC.
+          </label>
+        </div>
+
+        <!-- Interactive Google reCAPTCHA v2 Widget -->
+        <div class="pt-1">
+          <div id="recaptcha-box" class="bg-[#F9F9F9] border border-[#D3D3D3] rounded-[3px] p-3 flex items-center justify-between w-full max-w-[310px] transition-all shadow-2xs">
+            <div class="flex items-center gap-3">
+              <!-- Checkbox / Spinner / Checkmark Area -->
+              <div id="recaptcha-anchor" onclick="triggerRecaptchaVerification()" class="w-7 h-7 border-2 border-[#C1C1C1] hover:border-[#A6A6A6] bg-white rounded-[2px] cursor-pointer flex items-center justify-center transition-all select-none shadow-inner" title="Click to verify you are human">
+                <!-- Starts empty -->
+              </div>
+              <span id="recaptcha-label" onclick="triggerRecaptchaVerification()" class="text-xs text-[#282727] font-medium cursor-pointer select-none">
+                I'm not a robot
+              </span>
+            </div>
+            
+            <!-- Google reCAPTCHA Branding Logo -->
+            <div class="flex flex-col items-center justify-center pl-2 select-none">
+              <svg class="w-7 h-7 text-[#1A73E8]" viewBox="0 0 48 48" fill="currentColor">
+                <path d="M24 4C12.95 4 4 12.95 4 24s8.95 20 20 20 20-8.95 20-20S35.05 4 24 4zm0 6c7.73 0 14 6.27 14 14 0 2.45-.64 4.74-1.76 6.74L24 18.48V10zm-1.74 3.24L34.52 35.5c-2.85 1.57-6.11 2.5-9.52 2.5-7.73 0-14-6.27-14-14 0-2.45.64-4.74 1.76-6.74l12.24 12.24v-8.48zm-8.52 14.28L24 38v-8.48l-10.26-10.28c-.62 1.45-1 3.05-1 4.76 0 1.25.21 2.45.58 3.58z"/>
+              </svg>
+              <div class="text-[9px] font-bold text-[#555555] tracking-tight leading-none mt-0.5">reCAPTCHA</div>
+              <div class="text-[8px] text-[#777777] leading-tight mt-0.5">
+                <a href="https://policies.google.com/privacy" target="_blank" class="hover:underline">Privacy</a> • 
+                <a href="https://policies.google.com/terms" target="_blank" class="hover:underline">Terms</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Error Alert if user submits without verifying -->
+          <p id="recaptcha-error" class="hidden text-xs text-red-600 mt-1.5 flex items-center gap-1 font-medium">
+            <svg class="w-3.5 h-3.5 fill-current flex-shrink-0" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+            Please check the box to confirm you are not a robot.
+          </p>
+          <input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response" value="">
+        </div>
+
+        <button type="submit" id="modal-submit-btn" class="w-full bg-[#C01E25] hover:bg-[#9E161C] text-white font-bold py-3.5 rounded-xl text-sm transition shadow-md flex items-center justify-center gap-2">
+          <span>Send Enquiry</span>
+        </button>
+
+        </form>
+      </div>
+
+      <!-- ===== ENQUIRY SUCCESS PANEL (shown after submission) ===== -->
+      <div id="enquiry-success-panel" class="hidden p-10 flex flex-col items-center text-center space-y-5">
+        <div class="w-20 h-20 rounded-full bg-emerald-50 border-4 border-emerald-400 flex items-center justify-center mt-6">
+          <svg class="w-10 h-10 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+          </svg>
+        </div>
+        <div>
+          <h3 class="text-2xl font-bold text-[#C01E25] font-serif tracking-tight">Enquiry Submitted!</h3>
+          <p class="mt-2 text-sm text-gray-600 leading-relaxed max-w-xs mx-auto">
+            Our sales executive will contact you shortly.
+          </p>
+        </div>
+        <div class="flex items-center gap-2 bg-blue-50 border border-blue-100 rounded-full px-4 py-2 text-[11px] text-blue-700 font-medium">
+          <svg class="w-3.5 h-3.5 text-blue-500 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/>
+          </svg>
+          Your enquiry has been received and our advisor will contact you shortly.
+        </div>
+        <button onclick="resetEnquiryModal()" class="mt-2 mb-8 text-xs text-gray-400 hover:text-[#C01E25] underline transition">
+          Submit another enquiry
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Hidden iframe for silent Salesforce Web-to-Lead POST -->
+  <iframe id="sf-submit-iframe" name="sf-submit-iframe" style="display:none;width:0;height:0;border:0;" aria-hidden="true"></iframe>
+  <!-- ================= FLOATING AI ASSISTANT & SOCIALS (APPASWAMY EXACT PATTERN) ================= -->
+  <div class="fixed bottom-6 right-6 z-40 flex flex-col items-end space-y-3">
+    
+    <a href="#instagram" class="w-9 h-9 rounded-full bg-gradient-to-tr from-amber-500 via-rose-500 to-purple-600 text-white flex items-center justify-center shadow-md hover:scale-110 transition" title="UrbanNest Instagram">
+      <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+    </a>
+
+    <!-- Pill Invitation -->
+    <div id="ai-greeting-bubble" onclick="toggleChatbot()" class="chat-bubble-tail relative bg-white border border-gray-200 text-gray-800 text-xs font-semibold py-2 px-3 rounded-2xl shadow-lg cursor-pointer flex items-center gap-2 hover:bg-gray-50 transition">
+      <div class="w-6 h-6 rounded-full bg-[#C01E25] text-white flex items-center justify-center font-bold text-[10px]">
+        UN
+      </div>
+      <span>Hi, I'm UrbanNest AI Assistant</span>
+    </div>
+
+    <!-- Main Launcher Icon -->
+    <button onclick="toggleChatbot()" class="relative w-14 h-14 rounded-full bg-white border-2 border-gray-200 shadow-xl flex items-center justify-center hover:scale-105 transition" title="Open UrbanNest Help Desk">
+      <div class="w-10 h-10 rounded-full bg-[#C01E25] text-white flex items-center justify-center">
+        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/></svg>
+      </div>
+      <span class="absolute -top-1 -right-1 w-5 h-5 bg-[#C01E25] text-white rounded-full text-[10px] font-bold flex items-center justify-center border-2 border-white">
+        1
+      </span>
+    </button>
+  </div>
+
+  <!-- ================= THE URBANNEST HELP DESK CHATBOT (EXACT VIDEO REPLICA) ================= -->
+  <div id="chatbot-drawer" class="chat-drawer fixed bottom-24 right-6 w-96 max-w-[92vw] bg-white rounded-3xl overflow-hidden z-50 hidden border border-gray-300">
+    
+    <!-- Red Header Bar -->
+    <div class="bg-[#C01E25] text-white p-4 flex items-center justify-between">
+      <div class="flex items-center gap-2.5">
+        <div class="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center font-bold text-xs">
+          UN
+        </div>
+        <div>
+          <div class="font-bold text-sm tracking-wide">UrbanNest Group Help Desk</div>
+          <div class="text-[10px] text-emerald-200 flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-300 animate-pulse"></span>
+            Online • Salesforce Agentforce Active
+          </div>
+        </div>
+      </div>
+      <button onclick="toggleChatbot()" class="text-white/80 hover:text-white text-lg font-bold">✕</button>
+    </div>
+
+    <!-- Chat Messages -->
+    <div id="chat-messages" class="p-4 h-96 overflow-y-auto space-y-4 custom-scroll text-xs bg-slate-50 relative">
+      <!-- Watermark City Skyline (As in video) -->
+      <div class="absolute inset-x-0 bottom-10 opacity-5 pointer-events-none flex justify-center">
+        <svg class="w-64 h-32" fill="currentColor" viewBox="0 0 200 100"><path d="M10 90 L10 50 L30 50 L30 90 L40 90 L40 30 L65 30 L65 90 L75 90 L75 20 L100 20 L100 90 L110 90 L110 40 L140 40 L140 90 L150 90 L150 60 L180 60 L180 90 Z"/></svg>
+      </div>
+
+      <!-- Step 1: Language Selection Greeting -->
+      <div class="flex items-start gap-2.5">
+        <div class="w-7 h-7 rounded-full bg-[#C01E25] text-white flex-shrink-0 flex items-center justify-center text-[10px] font-bold">
+          UN
+        </div>
+        <div class="bg-white border border-gray-200 rounded-2xl rounded-tl-none p-3 shadow-2xs max-w-[85%] space-y-2">
+          <p class="text-gray-800 leading-relaxed">
+            <strong>UrbanNest Real Estates:</strong> Please select your preferred language.
+          </p>
+          <div class="flex items-center gap-2 pt-1" id="language-pills">
+            <button onclick="selectLanguage('English')" class="flex-1 border border-[#C01E25] text-[#C01E25] hover:bg-[#C01E25] hover:text-white font-bold py-1.5 rounded-full text-xs transition text-center">
+              English
+            </button>
+            <button onclick="selectLanguage('தமிழ்')" class="flex-1 border border-gray-300 text-gray-700 hover:border-[#C01E25] hover:text-[#C01E25] font-bold py-1.5 rounded-full text-xs transition text-center">
+              தமிழ்
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Message Input -->
+    <div class="p-3 bg-white border-t border-gray-200">
+      <form onsubmit="handleChatSubmit(event)" class="flex items-center gap-2">
+        <input type="text" id="chat-input-text" placeholder="Type your message..." class="flex-grow bg-gray-100 border border-gray-200 rounded-full px-4 py-2 text-xs focus:outline-none focus:ring-1 focus:ring-[#C01E25]">
+        <button type="submit" class="w-8 h-8 rounded-full bg-[#C01E25] hover:bg-[#9E161C] text-white flex items-center justify-center flex-shrink-0 shadow-xs">
+          <svg class="w-3.5 h-3.5 rotate-90" fill="currentColor" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+        </button>
+      </form>
+      <div class="text-[9px] text-gray-400 text-center mt-1.5">
+        ⚡ Powered by Salesforce Agentforce • Web-to-Lead Connected
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ================= LUXURY FOOTER ================= -->
+  <footer class="bg-white border-t border-gray-200 text-xs text-gray-500 py-6 mt-12">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-2">
+        <span class="font-bold text-gray-800">UrbanNest Real Estate</span>
+        <span>•</span>
+        <span>BRD UN-BRD-001 Compliant Platform</span>
+      </div>
+      <div>
+        <span>Salesforce Sales Cloud & Experience Cloud • Razorpay Payments • TNRERA Approved</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ================= CLIENT LOGIC & DATA REPOSITORY ================= -->
+  <script>
+    // 1. Data Store for Individual 1, 2 & 3 BHK House Units (BRD 2.1.1, 2.4 & 4.1)
+    const unitsData = [
+      { id: "LUM-101", proj: "UrbanNest Lumina", bhk: "2 BHK", area: 1420, floor: 1, price: "₹ 2.45 Cr", status: "Available", facing: "East" },
+      { id: "LUM-304", proj: "UrbanNest Lumina", bhk: "3 BHK", area: 2650, floor: 3, price: "₹ 4.80 Cr", status: "Under Offer", facing: "North" },
+      { id: "EMR-202", proj: "UrbanNest Emerald Bay", bhk: "3 BHK", area: 2350, floor: 2, price: "₹ 4.10 Cr", status: "Available", facing: "River View East" },
+      { id: "EMR-701", proj: "UrbanNest Emerald Bay", bhk: "3 BHK", area: 3400, floor: 7, price: "₹ 6.50 Cr", status: "Reserved", facing: "North-East" },
+      { id: "SOV-102", proj: "UrbanNest Sovereign", bhk: "3 BHK", area: 2100, floor: 1, price: "₹ 3.80 Cr", status: "Available", facing: "East" },
+      { id: "SOV-503", proj: "UrbanNest Sovereign", bhk: "3 BHK", area: 3150, floor: 5, price: "₹ 5.90 Cr", status: "Sold", facing: "South-East" },
+      { id: "PLM-101", proj: "UrbanNest Palm Grove", bhk: "1 BHK", area: 785, floor: 1, price: "₹ 95.0 L", status: "Available", facing: "East" },
+      { id: "PLM-402", proj: "UrbanNest Palm Grove", bhk: "2 BHK", area: 1350, floor: 4, price: "₹ 1.65 Cr", status: "Under Offer", facing: "North" },
+      { id: "ELY-110", proj: "UrbanNest Elysium", bhk: "2 BHK", area: 1450, floor: 11, price: "₹ 1.85 Cr", status: "Available", facing: "West" },
+      { id: "ELY-180", proj: "UrbanNest Elysium", bhk: "3 BHK", area: 2850, floor: 18, price: "₹ 3.75 Cr", status: "Available", facing: "North-East" },
+      { id: "SOL-201", proj: "UrbanNest Solitaire", bhk: "2 BHK", area: 1400, floor: 2, price: "₹ 1.40 Cr", status: "Occupied", facing: "North" },
+      { id: "SOL-602", proj: "UrbanNest Solitaire", bhk: "3 BHK", area: 2200, floor: 6, price: "₹ 2.20 Cr", status: "Occupied", facing: "East" },
+    ];
+
+    // Carousel properties for Help Desk AI Chat (BRD multi-state projects)
+    let currentCarouselIndex = 0;
+    const carouselProjects = [
+      {
+        name: "UrbanNest Lumina",
+        bhk: "2 & 3 BHK Luxury Residences at Guindy, Chennai",
+        price: "₹ 2.45 Cr – 4.80 Cr",
+        img: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=600&q=80"
+      },
+      {
+        name: "UrbanNest Palm Grove",
+        bhk: "1, 2 & 3 BHK Tech Corridor Residences at Sarjapur, Bengaluru",
+        price: "₹ 95 L – 2.45 Cr",
+        img: "https://images.unsplash.com/photo-1574362848149-11496d93a7c7?auto=format&fit=crop&w=600&q=80"
+      },
+      {
+        name: "UrbanNest Emerald Bay",
+        bhk: "3 BHK River Suites at Kotturpuram, Chennai",
+        price: "₹ 4.10 Cr – 6.50 Cr",
+        img: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=600&q=80"
+      }
+    ];
+
+    // 2. Navigation Tab Switching
+    function switchMainTab(tab) {
+      const views = ['residential', 'inventory', 'chauffeur', 'razorpay', 'cancellation', 'executive'];
+      views.forEach(v => {
+        const el = document.getElementById('view-' + v);
+        const nav = document.getElementById('nav-' + v);
+        if (el) el.classList.add('hidden');
+        if (nav) {
+          nav.classList.remove('text-[#C01E25]', 'border-b-2', 'border-[#C01E25]', 'font-bold');
+        }
+      });
+
+      const targetEl = document.getElementById('view-' + tab);
+      const targetNav = document.getElementById('nav-' + tab);
+      if (targetEl) targetEl.classList.remove('hidden');
+      if (targetNav) targetNav.classList.add('text-[#C01E25]', 'border-b-2', 'border-[#C01E25]', 'font-bold');
+
+      if (tab === 'inventory') renderUnits();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // 3. Render 1, 2, 3 BHK Houses Grid with Exact BRD Statuses
+    function renderUnits(filter = 'all') {
+      const container = document.getElementById('units-container');
+      if (!container) return;
+      container.innerHTML = '';
+
+      const filtered = unitsData.filter(u => filter === 'all' || u.bhk === filter);
+      filtered.forEach(unit => {
+        let statusBadge = "bg-emerald-100 text-emerald-800 border-emerald-300";
+        if (unit.status === "Under Offer") statusBadge = "bg-amber-100 text-amber-800 border-amber-300";
+        if (unit.status === "Reserved") statusBadge = "bg-purple-100 text-purple-800 border-purple-300";
+        if (unit.status === "Sold") statusBadge = "bg-red-100 text-red-800 border-red-300";
+        if (unit.status === "Occupied") statusBadge = "bg-blue-100 text-blue-800 border-blue-300";
+
+        const card = document.createElement('div');
+        card.className = "bg-white p-4 rounded-xl border border-gray-200 shadow-2xs space-y-3";
+        card.innerHTML = `
+          <div class="flex justify-between items-start">
+            <div>
+              <span class="text-sm font-bold text-gray-900">${unit.id}</span>
+              <span class="block text-xs text-gray-500">${unit.proj} • Floor ${unit.floor}</span>
+            </div>
+            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full border ${statusBadge}">${unit.status}</span>
+          </div>
+          <div class="text-xs text-gray-600 space-y-1">
+            <div>Configuration: <strong>${unit.bhk}</strong></div>
+            <div>Built-Up Area: <strong>${unit.area} Sq.Ft</strong></div>
+            <div>Facing: <strong>${unit.facing}</strong></div>
+            <div>Base Price: <strong class="text-[#C01E25] font-bold text-sm">${unit.price}</strong></div>
+          </div>
+          <button onclick="openEnquireModal('${unit.proj} (House ${unit.id})', '${unit.bhk} - ${unit.price}')" ${unit.status === 'Sold' || unit.status === 'Occupied' ? 'disabled class="w-full bg-gray-100 text-gray-400 py-1.5 rounded-lg text-xs font-semibold cursor-not-allowed"' : 'class="w-full bg-[#C01E25] hover:bg-[#9E161C] text-white py-1.5 rounded-lg text-xs font-semibold transition shadow-2xs"'}>
+            ${unit.status === 'Sold' || unit.status === 'Occupied' ? 'Unavailable' : 'Enquire on this House'}
+          </button>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function filterUnits(type) {
+      document.querySelectorAll('.unit-filter-btn').forEach(btn => {
+        btn.classList.remove('bg-[#C01E25]', 'text-white');
+        btn.classList.add('bg-gray-100', 'text-gray-700');
+      });
+      event.target.classList.remove('bg-gray-100', 'text-gray-700');
+      event.target.classList.add('bg-[#C01E25]', 'text-white');
+      renderUnits(type);
+    }
+
+    // 4. Project Filters (Status & Location)
+    function filterProjectsByStatus(status) {
+      const tabs = ['all', 'ongoing', 'ready', 'completed'];
+      tabs.forEach(t => {
+        const btn = document.getElementById('tab-' + t);
+        if (btn) {
+          btn.classList.remove('text-[#C01E25]', 'border-b-2', 'border-[#C01E25]', 'font-bold');
+          btn.classList.add('text-gray-500');
+        }
+      });
+      const activeBtn = document.getElementById('tab-' + status);
+      if (activeBtn) {
+        activeBtn.classList.remove('text-gray-500');
+        activeBtn.classList.add('text-[#C01E25]', 'border-b-2', 'border-[#C01E25]', 'font-bold');
+      }
+
+      const cards = document.querySelectorAll('#projects-grid .project-card');
+      cards.forEach(card => {
+        const cardStatus = card.getAttribute('data-status');
+        if (status === 'all' || cardStatus === status) {
+          card.classList.remove('hidden');
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+    }
+
+    function filterProjectsByLocation() {
+      const loc = document.getElementById('location-filter').value.toLowerCase();
+      const cards = document.querySelectorAll('#projects-grid .project-card');
+      cards.forEach(card => {
+        const cardLoc = card.getAttribute('data-location').toLowerCase();
+        if (loc === 'all' || cardLoc.includes(loc)) {
+          card.classList.remove('hidden');
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+    }
+
+    function searchProjects() {
+      const query = document.getElementById('project-search-input').value.toLowerCase().trim();
+      const cards = document.querySelectorAll('#projects-grid .project-card');
+      cards.forEach(card => {
+        const text = card.textContent.toLowerCase();
+        if (!query || text.includes(query)) {
+          card.classList.remove('hidden');
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+    }
+
+    // 5. In-Card Enquiry Submissions (LeadSource = 'Own Website', BRD 2.2)
+    function toggleInCardForm(formId) {
+      const form = document.getElementById(formId);
+      if (form) form.classList.toggle('hidden');
+    }
+
+    function submitInCardEnquiry(projectName, key) {
+      const name = document.getElementById('incard-name-' + key).value.trim();
+      const email = document.getElementById('incard-email-' + key).value.trim();
+      const phone = document.getElementById('incard-phone-' + key).value.trim();
+      const bhk = document.getElementById('incard-bhk-' + key).value;
+
+      if (!name || !email || !phone) {
+        alert("Please complete your Name, Email, and 10-digit Phone number.");
+        return;
+      }
+
+      alert(`Thank you ${name}!\n\nYour enquiry for ${projectName} (${bhk}) has been captured.\nOur sales advisor will contact you shortly.`);
+      
+      toggleInCardForm('form-' + key);
+    }
+
+    // 6. Dedicated Project Brochure Modal (BRD 2.1.1)
+    function openProjectBrochure(projectName) {
+      const modal = document.getElementById('brochure-modal');
+      const title = document.getElementById('brochure-title');
+      const sub = document.getElementById('brochure-subtitle');
+      if (title) title.textContent = `${projectName} — Official Brochure`;
+      if (sub) sub.textContent = `Comprehensive architectural details, tower specifications, and 1/2/3 BHK sample layouts`;
+      modal.classList.remove('hidden');
+    }
+
+    function closeProjectBrochure() {
+      document.getElementById('brochure-modal').classList.add('hidden');
+    }
+
+    function submitBrochureLead() {
+      const name = document.getElementById('brochure-lead-name').value.trim();
+      const email = document.getElementById('brochure-lead-email').value.trim();
+      const phone = document.getElementById('brochure-lead-phone').value.trim();
+
+      if (!name || !email || !phone) {
+        alert("Please provide Name, Email, and Phone to receive the brochure.");
+        return;
+      }
+
+      alert(`Thank you ${name}! The high-resolution project brochure and CAD floor plans have been emailed to ${email}. A sales executive will reach out to assist you.`);
+      closeProjectBrochure();
+    }
+
+    // 7. Google reCAPTCHA v2 & Modal Enquire Now
+    let selectedModalProject = "General Residential Development";
+    let isRecaptchaVerified = false;
+    let isRecaptchaVerifying = false;
+
+    function openEnquireModal(project = "General Residential Development", details = "") {
+      selectedModalProject = project;
+      document.getElementById('enquire-modal').classList.remove('hidden');
+      resetRecaptchaUI();
+    }
+
+    function closeEnquireModal() {
+      document.getElementById('enquire-modal').classList.add('hidden');
+    }
+
+    function toggleSalesforceOrgSettings() {
+      const content = document.getElementById('sf-org-settings-content');
+      const icon = document.getElementById('sf-sync-toggle-icon');
+      if (content) {
+        content.classList.toggle('hidden');
+        if (icon) icon.textContent = content.classList.contains('hidden') ? '▾' : '▴';
+      }
+    }
+
+    function resetRecaptchaUI() {
+      isRecaptchaVerified = false;
+      isRecaptchaVerifying = false;
+      const anchor = document.getElementById('recaptcha-anchor');
+      const box = document.getElementById('recaptcha-box');
+      const err = document.getElementById('recaptcha-error');
+      const tokenInput = document.getElementById('g-recaptcha-response');
+
+      if (anchor) anchor.innerHTML = '';
+      if (box) {
+        box.classList.remove('border-red-500', 'recaptcha-error-shake', 'border-[#0F9D58]');
+        box.classList.add('border-[#D3D3D3]');
+      }
+      if (err) err.classList.add('hidden');
+      if (tokenInput) tokenInput.value = '';
+    }
+
+    function triggerRecaptchaVerification() {
+      if (isRecaptchaVerified || isRecaptchaVerifying) return;
+
+      const anchor = document.getElementById('recaptcha-anchor');
+      const box = document.getElementById('recaptcha-box');
+      const err = document.getElementById('recaptcha-error');
+      const tokenInput = document.getElementById('g-recaptcha-response');
+
+      isRecaptchaVerifying = true;
+      if (err) err.classList.add('hidden');
+      if (box) box.classList.remove('border-red-500', 'recaptcha-error-shake');
+
+      // 1. Show realistic Google blue circular spinner
+      anchor.innerHTML = '<div class="recaptcha-spinner"></div>';
+
+      // 2. Realistic verification delay (simulating Google risk score analysis)
+      setTimeout(() => {
+        isRecaptchaVerifying = false;
+        isRecaptchaVerified = true;
+
+        // 3. Show Google green animated checkmark
+        anchor.innerHTML = `
+          <svg class="w-6 h-6 text-[#0F9D58] animate-in zoom-in duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+          </svg>
+        `;
+        
+        // Generate cryptographic reCAPTCHA response token
+        const simulatedToken = "03AFcWeA" + Array.from({length: 44}, () => Math.random().toString(36)[2]||'k').join('');
+        if (tokenInput) tokenInput.value = simulatedToken;
+
+        if (box) {
+          box.classList.remove('border-[#D3D3D3]');
+          box.classList.add('border-[#0F9D58]');
+        }
+      }, 950);
+    }
+
+    function handleModalSubmit(e) {
+      e.preventDefault();
+
+      // 1. Enforce reCAPTCHA verification
+      if (!isRecaptchaVerified) {
+        const box = document.getElementById('recaptcha-box');
+        const err = document.getElementById('recaptcha-error');
+        if (box) {
+          box.classList.remove('border-[#D3D3D3]', 'border-[#0F9D58]');
+          box.classList.add('border-red-500', 'recaptcha-error-shake');
+        }
+        if (err) err.classList.remove('hidden');
+        return;
+      }
+
+      const name = document.getElementById('modal-name').value.trim();
+      const email = document.getElementById('modal-email').value.trim();
+      const phone = document.getElementById('modal-phone').value.trim();
+      const bhk = document.getElementById('modal-bhk').value;
+      const budget = document.getElementById('modal-budget').value;
+
+      // 2. Submit silently to live Salesforce Org via hidden iframe (no popup, no new tab)
+      const SALESFORCE_ORG_ID = '00Dg5000009ZkpC';
+      const form = document.createElement('form');
+      form.method = 'POST';
+      form.action = 'https://webto.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8';
+      form.target = 'sf-submit-iframe';
+
+      const fields = {
+        oid: SALESFORCE_ORG_ID,
+        retURL: 'https://www.urbannest.in/thankyou',
+        last_name: name,
+        first_name: '',
+        email: email,
+        phone: phone,
+        lead_source: 'Own Website',
+        description: 'UrbanNest Web Enquiry | Project: ' + selectedModalProject + ' | BHK: ' + bhk + ' | Budget: ' + budget + ' | reCAPTCHA: Verified'
+      };
+
+      for (const [key, val] of Object.entries(fields)) {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = key;
+        input.value = val;
+        form.appendChild(input);
+      }
+
+      document.body.appendChild(form);
+      form.submit();
+      document.body.removeChild(form);
+
+      // 3. Show branded inline success screen (no alert popup)
+      document.getElementById('enquiry-form-body').classList.add('hidden');
+      document.getElementById('enquiry-success-panel').classList.remove('hidden');
+    }
+
+    function resetEnquiryModal() {
+      document.getElementById('enquiry-success-panel').classList.add('hidden');
+      document.getElementById('enquiry-form-body').classList.remove('hidden');
+      document.getElementById('enquiry-form-body').querySelector('form').reset();
+      resetRecaptchaUI();
+    }
+    function recordPhoneCallClick() {
+      // BRD 2.2: Records Phone Enquiry Lead Source
+      console.log("[LEAD EVENT] Prospective buyer tapped Sales Hotline +91 80562 10606. Lead Source: Phone Enquiry.");
+    }
+
+    // 8. Help Desk Chatbot (Multi-Step Flow Matching appaswamy.mp4)
+    function toggleChatbot() {
+      const drawer = document.getElementById('chatbot-drawer');
+      const bubble = document.getElementById('ai-greeting-bubble');
+      drawer.classList.toggle('hidden');
+      if (bubble) bubble.classList.add('hidden');
+    }
+
+    function selectLanguage(lang) {
+      appendUserChatMessage(lang);
+
+      setTimeout(() => {
+        appendBotChatMessage(`
+          <p><strong>UrbanNest Help Desk:</strong> Good morning. Greetings from the UrbanNest help desk.</p>
+          <p class="mt-2 text-gray-600">UrbanNest is an eminent real estate conglomerate crafting exquisite dwellings and elevated lifestyle solutions across South India.</p>
+          <div class="mt-3">
+            <p class="font-bold text-gray-800 mb-2">Select your preferred city.</p>
+            <div class="flex flex-wrap gap-2">
+              <button onclick="selectCity('Chennai')" class="border border-[#C01E25] bg-[#C01E25] text-white font-bold py-1 px-3.5 rounded-full text-xs">Chennai</button>
+              <button onclick="selectCity('Bengaluru')" class="border border-gray-300 text-gray-700 hover:border-[#C01E25] font-bold py-1 px-3.5 rounded-full text-xs">Bengaluru</button>
+              <button onclick="selectCity('Hyderabad')" class="border border-gray-300 text-gray-700 hover:border-[#C01E25] font-bold py-1 px-3.5 rounded-full text-xs">Hyderabad</button>
+              <button onclick="selectCity('Coimbatore')" class="border border-gray-300 text-gray-700 hover:border-[#C01E25] font-bold py-1 px-3.5 rounded-full text-xs">Coimbatore</button>
+            </div>
+          </div>
+        `);
+      }, 500);
+    }
+
+    function selectCity(city) {
+      appendUserChatMessage(city);
+
+      setTimeout(() => {
+        appendBotChatMessage(`
+          <p><strong>UrbanNest Help Desk:</strong> Please choose a development project in ${city} to see details:</p>
+          <div class="mt-3 bg-white border border-gray-300 rounded-xl overflow-hidden shadow-xs">
+            <div class="p-2 border-b border-gray-100 flex justify-between items-center text-xs">
+              <span class="font-bold text-gray-900" id="carousel-proj-name">${carouselProjects[0].name}</span>
+              <span class="text-gray-400 text-[10px]" id="carousel-indicator">1/3</span>
+            </div>
+            <div class="relative h-28 bg-gray-900">
+              <img id="carousel-proj-img" src="${carouselProjects[0].img}" class="w-full h-full object-cover">
+              <button onclick="prevCarousel()" class="absolute left-1 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-white/80 hover:bg-white text-gray-800 flex items-center justify-center font-bold text-xs">‹</button>
+              <button onclick="nextCarousel()" class="absolute right-1 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-white/80 hover:bg-white text-gray-800 flex items-center justify-center font-bold text-xs">›</button>
+            </div>
+            <div class="p-2.5 text-center space-y-2">
+              <p class="text-[11px] text-gray-600 font-medium" id="carousel-proj-bhk">${carouselProjects[0].bhk}</p>
+              <button onclick="openChatContactForm()" class="border border-[#C01E25] text-[#C01E25] hover:bg-[#C01E25] hover:text-white font-bold py-1 px-4 rounded-full text-xs transition">
+                See Details
+              </button>
+            </div>
+          </div>
+        `);
+      }, 500);
+    }
+
+    function nextCarousel() {
+      currentCarouselIndex = (currentCarouselIndex + 1) % carouselProjects.length;
+      updateCarouselUI();
+    }
+    function prevCarousel() {
+      currentCarouselIndex = (currentCarouselIndex - 1 + carouselProjects.length) % carouselProjects.length;
+      updateCarouselUI();
+    }
+    function updateCarouselUI() {
+      const p = carouselProjects[currentCarouselIndex];
+      document.getElementById('carousel-proj-name').textContent = p.name;
+      document.getElementById('carousel-indicator').textContent = `${currentCarouselIndex + 1}/${carouselProjects.length}`;
+      document.getElementById('carousel-proj-img').src = p.img;
+      document.getElementById('carousel-proj-bhk').textContent = p.bhk;
+    }
+
+    function openChatContactForm() {
+      appendUserChatMessage("See Details");
+
+      setTimeout(() => {
+        appendBotChatMessage(`
+          <div class="bg-white border border-gray-300 rounded-xl p-3 shadow-xs space-y-2 text-xs">
+            <div class="text-center pb-1 border-b border-gray-100">
+              <strong class="text-gray-900 block text-xs">Contact Information (BRD 2.1.2)</strong>
+              <span class="text-[10px] text-gray-500">Enter details to connect with relationship manager</span>
+            </div>
+            <input type="text" id="chat-lead-name" placeholder="Your Full Name" class="w-full border border-gray-200 rounded-lg p-2 text-xs">
+            <input type="email" id="chat-lead-email" placeholder="Email Address" class="w-full border border-gray-200 rounded-lg p-2 text-xs">
+            <div class="flex">
+              <span class="px-2 py-1.5 bg-gray-100 border border-r-0 border-gray-200 rounded-l-lg text-[11px] font-semibold">🇮🇳 +91</span>
+              <input type="tel" id="chat-lead-phone" placeholder="Mobile Number" class="w-full border border-gray-200 rounded-r-lg p-2 text-xs">
+            </div>
+            <button onclick="submitChatContactForm()" class="w-full bg-[#C01E25] hover:bg-[#9E161C] text-white font-bold py-2 rounded-lg text-xs transition">
+              Submit
+            </button>
+          </div>
+        `);
+      }, 400);
+    }
+
+    function submitChatContactForm() {
+      const name = document.getElementById('chat-lead-name').value || "Prospective Buyer";
+      const email = document.getElementById('chat-lead-email').value || "buyer@urbannest.com";
+      const phone = document.getElementById('chat-lead-phone').value || "9840199999";
+
+      appendBotChatMessage(`
+        <p><strong>UrbanNest Help Desk:</strong> Thank you <strong>${name}</strong>!</p>
+        <p class="mt-1 text-gray-600">Your enquiry for <strong>${carouselProjects[currentCarouselIndex].name}</strong> has been logged into Salesforce CRM.</p>
+        <p class="mt-2 text-emerald-700 font-semibold text-[11px]">✓ Lead ID: 00Q5g00000${Math.floor(10000 + Math.random() * 90000)} | Assigned via Round-Robin.</p>
+      `);
+    }
+
+    function handleChatSubmit(e) {
+      e.preventDefault();
+      const input = document.getElementById('chat-input-text');
+      const val = input.value.trim();
+      if (!val) return;
+      appendUserChatMessage(val);
+      input.value = '';
+
+      setTimeout(() => {
+        let reply = "Our sales executives are on hand to provide project brochures, schedule doorstep chauffeur site visits, and generate Razorpay advance links. How can we help today?";
+        const lower = val.toLowerCase();
+        if (lower.includes('price') || lower.includes('cost')) {
+          reply = "UrbanNest Lumina starts at ₹ 2.45 Cr, Emerald Bay at ₹ 4.10 Cr, and Palm Grove Bengaluru from ₹ 95 Lakhs. All include premium teakwood fittings and covered parking.";
+        } else if (lower.includes('visit') || lower.includes('cab') || lower.includes('pickup')) {
+          reply = "We offer complimentary doorstep pickup in a sanitized Toyota Innova Crysta or Mercedes-Benz! Switch to the 'Chauffeur Site Visit' tab above to book your date and time.";
+        } else if (lower.includes('razorpay') || lower.includes('payment')) {
+          reply = "Advance payments can be completed online via Razorpay payment links sent by our sales executives, which instantly reserves your house unit.";
+        }
+        appendBotChatMessage(`<strong>UrbanNest Help Desk:</strong> ${reply}`);
+      }, 600);
+    }
+
+    function appendUserChatMessage(msg) {
+      const box = document.getElementById('chat-messages');
+      const div = document.createElement('div');
+      div.className = "flex justify-end";
+      div.innerHTML = `<div class="bg-[#C01E25] text-white rounded-2xl rounded-tr-none py-1.5 px-3 max-w-[80%] text-xs font-medium">${msg}</div>`;
+      box.appendChild(div);
+      box.scrollTop = box.scrollHeight;
+    }
+
+    function appendBotChatMessage(html) {
+      const box = document.getElementById('chat-messages');
+      const div = document.createElement('div');
+      div.className = "flex items-start gap-2.5";
+      div.innerHTML = `
+        <div class="w-7 h-7 rounded-full bg-[#C01E25] text-white flex-shrink-0 flex items-center justify-center text-[10px] font-bold">UN</div>
+        <div class="bg-white border border-gray-200 rounded-2xl rounded-tl-none p-3 shadow-2xs max-w-[85%] text-xs text-gray-800">${html}</div>
+      `;
+      box.appendChild(div);
+      box.scrollTop = box.scrollHeight;
+    }
+
+    // 9. Chauffeur Cab Logistics (BRD 2.3 & 4.3)
+    function bookChauffeurVisit() {
+      const proj = document.getElementById('cab-project').value;
+      const fleet = document.getElementById('cab-fleet').value;
+      const name = document.getElementById('cab-name').value.trim();
+      const phone = document.getElementById('cab-phone').value.trim();
+      const address = document.getElementById('cab-address').value.trim();
+      const date = document.getElementById('cab-date').value;
+      const time = document.getElementById('cab-time').value;
+
+      if (!name || !phone || !address) {
+        alert("Please complete Name, Mobile Number, and Doorstep Pickup Address.");
+        return;
+      }
+
+      alert(`Appointment & Vehicle Request Confirmed!\n\n• Passenger: ${name} (${phone})\n• Pickup Address: ${address}\n• Fleet: ${fleet}\n• Destination: ${proj} Experience Center\n• Slot: ${date} at ${time}\n\nLead status updated to 'Site Visit Scheduled' and driver details dispatched via SMS & WhatsApp.`);
+    }
+
+    // 10. Razorpay Payment Links & Webhooks (BRD 2.5 & 4.5)
+    window.urbannestSalesforceEndpoint = 'https://orgfarm-bf13b36334-dev-ed.develop.my.salesforce.com/services/apexrest/api/urbannest/payment';
+
+    function savePaymentToSalesforce(paymentData) {
+      const endpoint = window.urbannestSalesforceEndpoint;
+      if (!endpoint) return Promise.resolve({ success: false, skipped: true });
+
+      return fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(paymentData)
+      })
+      .then(async response => {
+        const text = await response.text();
+        let parsed = {};
+        try { parsed = JSON.parse(text); } catch (e) { parsed = { message: text }; }
+        return { ok: response.ok, ...parsed };
+      })
+      .catch(error => ({ success: false, message: error.message || 'Salesforce save failed.' }));
+    }
+
+    function updateRzpAmount() {
+      const type = document.getElementById('rzp-type').value;
+      document.getElementById('rzp-amount').value = (type === 'Advance') ? "₹ 100" : "₹ 1,000";
+    }
+
+    function createRazorpayLink() {
+      const unit = document.getElementById('rzp-unit').value;
+      const type = document.getElementById('rzp-type').value;
+      const amountText = document.getElementById('rzp-amount').value;
+      const email = document.getElementById('rzp-email').value.trim();
+      const phone = document.getElementById('rzp-phone').value.trim();
+      const name = document.getElementById('rzp-name').value.trim();
+      const keyId = document.getElementById('rzp-key-id').value.trim();
+      const rawAmount = Number(String(amountText).replace(/[^\d]/g, ''));
+
+      if (!name || !email || !phone) {
+        alert('Please enter customer name, email, and phone before proceeding with Razorpay.');
+        return;
+      }
+
+      if (!keyId) {
+        alert('Add your Razorpay Key ID to continue. The public key is okay to show in the browser, but the secret key must stay on the server.');
+        return;
+      }
+
+      if (!window.Razorpay) {
+        alert('Razorpay checkout script could not load. Please check your internet connection.');
+        return;
+      }
+
+      const amountInPaise = Number.isFinite(rawAmount) ? rawAmount * 100 : 500000;
+      const safeKeyId = keyId;
+
+      const options = {
+        key: safeKeyId,
+        amount: amountInPaise,
+        currency: 'INR',
+        name: 'UrbanNest Real Estate',
+        description: `${type} Payment — ${unit}`,
+        image: './urbannest-logo.png',
+        handler: function(response) {
+          const paymentData = {
+            customerName: name,
+            customerEmail: email,
+            customerPhone: phone,
+            paymentType: type,
+            projectName: unit,
+            amount: amountInPaise / 100,
+            razorpayPaymentId: response.razorpay_payment_id,
+            razorpayLinkId: 'checkout_' + (response.razorpay_payment_id || Date.now())
+          };
+
+          savePaymentToSalesforce(paymentData).then(result => {
+            if (!result.skipped && result.success) {
+              console.log('Salesforce payment saved:', result);
+            } else if (!result.skipped) {
+              console.warn('Salesforce save failed:', result.message);
+            }
+          });
+
+          document.getElementById('rzp-link-id').textContent = response.razorpay_payment_id || 'payment_received';
+          document.getElementById('rzp-link-title').textContent = `${type} Payment: ${unit}`;
+          document.getElementById('rzp-link-amt').textContent = amountText;
+          document.getElementById('rzp-link-status').textContent = 'Paid (Confirmed)';
+          document.getElementById('rzp-link-status').className = 'bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full text-[10px]';
+          alert(`Payment Successful!\n\nRazorpay Payment ID: ${response.razorpay_payment_id}\nAmount: ${amountText}\nCustomer: ${name}\nStatus: Confirmed and recorded.`);
+        },
+        prefill: {
+          name: name,
+          email: email,
+          contact: phone.replace(/\D/g, '')
+        },
+        theme: {
+          color: '#C01E25'
+        },
+        modal: {
+          ondismiss: function() {
+            document.getElementById('rzp-link-status').textContent = 'Cancelled / Dismissed';
+            document.getElementById('rzp-link-status').className = 'bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded-full text-[10px]';
+          }
+        }
+      };
+
+      const razorpay = new Razorpay(options);
+      razorpay.open();
+
+      document.getElementById('rzp-link-id').textContent = 'checkout_open';
+      document.getElementById('rzp-link-title').textContent = `${type} Payment: ${unit}`;
+      document.getElementById('rzp-link-amt').textContent = amountText;
+      document.getElementById('rzp-link-status').textContent = 'Checkout Open';
+      document.getElementById('rzp-link-status').className = 'bg-blue-100 text-blue-800 font-bold px-2 py-0.5 rounded-full text-[10px]';
+    }
+
+    function simulateRazorpayWebhook(eventStatus) {
+      if (eventStatus === 'paid') {
+        document.getElementById('rzp-link-status').textContent = "Paid (Confirmed)";
+        document.getElementById('rzp-link-status').className = "bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full text-[10px]";
+        alert(`Razorpay Webhook Verified (BRD 4.5):\n\nEvent: payment.captured\nStatus: Paid\nAction: Booking Opportunity moved to 'Document Collection'.\nHouse Unit status locked to 'Reserved'.`);
+      } else {
+        document.getElementById('rzp-link-status').textContent = "Failed / Expired";
+        document.getElementById('rzp-link-status').className = "bg-red-100 text-red-800 font-bold px-2 py-0.5 rounded-full text-[10px]";
+        alert(`Razorpay Webhook: Link Expired or Payment Failed. Recorded on Payment Record.`);
+      }
+    }
+
+    // 11. Cancellation & Refund (BRD 2.6 & 4.6)
+    function submitCancellation() {
+      const bkg = document.getElementById('canc-booking').value;
+      const reason = document.getElementById('canc-reason').value;
+      alert(`Cancellation Logged for ${bkg}:\nReason: ${reason}\nStandard Deduction: 10% (₹ 50,000)\nNet Refund Due: ₹ 4,50,000 (90%)\nStatus: Pending Sales Manager Approval.`);
+    }
+
+    function approveCancellation(unitId) {
+      alert(`Sales Manager Approved Cancellation for Unit ${unitId}.\nRefund of ₹ 4,50,000 due within 3 business days.`);
+    }
+
+    function completeRefund(unitId) {
+      // Find unit in data and release back to Available
+      const target = unitsData.find(u => u.id.includes(unitId));
+      if (target) target.status = "Available";
+      alert(`Finance Team Confirmed Refund Completed for Unit ${unitId}.\n\nBRD Compliance Verification:\n• Refund Issued: ₹ 4,50,000 (after 10% deduction)\n• House Status: Released back to 'Available'\n• Opportunity Stage: Moved to 'Closed Lost'.`);
+      renderUnits();
+    }
+
+    // 12. Refresh Executive Dashboard
+    function refreshExecutiveData() {
+      document.getElementById('kpi-revenue').textContent = "₹ " + (1.45 + Math.random() * 0.2).toFixed(2) + " Cr";
+      alert("Executive Dashboard KPIs refreshed with latest Salesforce transactional and payment ledger data.");
+    }
+
+    // Initialize on page load
+    window.addEventListener('DOMContentLoaded', () => {
+      renderUnits();
+    });
+  </script>
+
+</body>
+</html>

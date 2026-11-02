@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Payment</label>
+    <pluralLabel>Payments</pluralLabel>
+    <nameField>
+        <displayFormat>PMT-{000000}</displayFormat>
+        <label>Payment Reference</label>
+        <type>AutoNumber</type>
+    </nameField>
+    <sharingModel>ControlledByParent</sharingModel>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>Tracks Razorpay online payment links and manual payments against bookings.</description>
+</CustomObject>

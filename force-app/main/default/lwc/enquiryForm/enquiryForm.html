@@ -1,0 +1,96 @@
+<template>
+    <div class="enquiry-card slds-box slds-theme_default slds-p-around_medium">
+        <div class="header-container slds-m-bottom_medium">
+            <h2 class="slds-text-heading_medium slds-text-color_inverse-weak brand-title">Find Your Dream Home at UrbanNest</h2>
+            <p class="slds-text-body_small slds-text-color_weak">Fill out the enquiry form below, and our property advisor will contact you within 2 business hours.</p>
+        </div>
+
+        <template if:true={notificationMessage}>
+            <div class={notificationClass} role="alert">
+                <span class="slds-assistive-text">Notification</span>
+                <h2>{notificationMessage}</h2>
+            </div>
+        </template>
+
+        <div class="slds-form slds-form_stacked">
+            <div class="slds-grid slds-gutters slds-wrap">
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                    <lightning-input label="First Name" value={formData.firstName} onchange={handleInputChange} data-field="firstName"></lightning-input>
+                </div>
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                    <lightning-input label="Last Name" required value={formData.lastName} onchange={handleInputChange} data-field="lastName"></lightning-input>
+                </div>
+            </div>
+
+            <div class="slds-grid slds-gutters slds-wrap slds-m-top_x-small">
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                    <lightning-input label="Email Address" type="email" value={formData.email} onchange={handleInputChange} data-field="email"></lightning-input>
+                </div>
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                    <lightning-input label="Phone Number" type="tel" required value={formData.phone} onchange={handleInputChange} data-field="phone" placeholder="e.g. 9876543210"></lightning-input>
+                </div>
+            </div>
+
+            <div class="slds-grid slds-gutters slds-wrap slds-m-top_x-small">
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                    <lightning-combobox
+                        label="BHK Preference"
+                        placeholder="Select BHK"
+                        options={bhkOptions}
+                        value={formData.bhkPreference}
+                        onchange={handleInputChange}
+                        data-field="bhkPreference">
+                    </lightning-combobox>
+                </div>
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                    <lightning-input
+                        label="Budget (in INR)"
+                        type="number"
+                        formatter="currency"
+                        value={formData.budget}
+                        onchange={handleInputChange}
+                        data-field="budget"
+                        placeholder="e.g. 6500000">
+                    </lightning-input>
+                </div>
+            </div>
+
+            <div class="slds-m-top_x-small">
+                <lightning-combobox
+                    label="Project of Interest"
+                    placeholder="Select an UrbanNest Project"
+                    options={projectOptions}
+                    value={formData.projectId}
+                    onchange={handleInputChange}
+                    data-field="projectId">
+                </lightning-combobox>
+            </div>
+
+            <div class="slds-m-top_x-small">
+                <lightning-textarea
+                    label="Questions or Specific Preferences"
+                    value={formData.remarks}
+                    onchange={handleInputChange}
+                    data-field="remarks"
+                    placeholder="Tell us about your timeline, floor preference, or preferred site visit date.">
+                </lightning-textarea>
+            </div>
+
+            <div class="slds-m-top_medium slds-text-align_center">
+                <lightning-button
+                    variant="brand"
+                    label="Submit Enquiry"
+                    icon-name="utility:send"
+                    onclick={handleSubmit}
+                    disabled={isLoading}
+                    class="submit-button">
+                </lightning-button>
+                <template if:true={isLoading}>
+                    <div class="slds-is-relative slds-m-top_small">
+                        <lightning-spinner alternative-text="Submitting enquiry" size="small"></lightning-spinner>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </div>
+</template>

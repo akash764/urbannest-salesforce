@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Cancellation and Refund</label>
+    <pluralLabel>Cancellations and Refunds</pluralLabel>
+    <nameField>
+        <displayFormat>CNL-{000000}</displayFormat>
+        <label>Cancellation Request ID</label>
+        <type>AutoNumber</type>
+    </nameField>
+    <sharingModel>ReadWrite</sharingModel>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>Handles customer drop-out, manager approval, 10% deduction, and finance refund tracking.</description>
+</CustomObject>

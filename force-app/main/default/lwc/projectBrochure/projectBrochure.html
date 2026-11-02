@@ -1,0 +1,84 @@
+<template>
+    <div class="brochure-container slds-theme_default slds-p-around_large">
+        <template if:true={isLoading}>
+            <lightning-spinner alternative-text="Loading Brochure" size="medium"></lightning-spinner>
+        </template>
+
+        <template if:true={brochure}>
+            <!-- Project Header Section -->
+            <div class="project-header slds-grid slds-wrap slds-m-bottom_large slds-grid_vertical-align-center">
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_8-of-12">
+                    <span class="slds-badge slds-theme_brand slds-m-bottom_x-small">{brochure.project.State__c}</span>
+                    <h1 class="slds-text-heading_large slds-m-bottom_xx-small">{brochure.project.Name}</h1>
+                    <p class="slds-text-body_regular slds-text-color_weak">{brochure.project.Description__c}</p>
+                </div>
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_4-of-12 slds-text-align_right slds-m-top_small">
+                    <template if:true={brochure.project.Brochure_PDF_URL__c}>
+                        <a href={brochure.project.Brochure_PDF_URL__c} target="_blank" class="slds-button slds-button_neutral">
+                            <lightning-icon icon-name="utility:download" size="x-small" class="slds-m-right_xx-small"></lightning-icon>
+                            Download Brochure PDF
+                        </a>
+                    </template>
+                </div>
+            </div>
+
+            <!-- Apartment Blocks & Towers Gallery -->
+            <div class="section-title slds-m-top_large slds-m-bottom_medium">
+                <h2 class="slds-text-heading_medium">Apartment Towers & Blocks</h2>
+            </div>
+            <div class="slds-grid slds-gutters slds-wrap">
+                <template for:each={brochure.apartments} for:item="apt">
+                    <div key={apt.Id} class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3 slds-m-bottom_medium">
+                        <div class="slds-box slds-box_small slds-theme_shade block-card">
+                            <h3 class="slds-text-heading_small slds-m-bottom_xx-small">{apt.Block_Name__c}</h3>
+                            <p class="slds-text-body_small">Total Floors: {apt.Total_Floors__c} | Total Units: {apt.Total_Units__c}</p>
+                        </div>
+                    </div>
+                </template>
+            </div>
+
+            <!-- Complete House Units Matrix (All 1, 2, 3 BHK units) -->
+            <div class="section-title slds-m-top_x-large slds-m-bottom_medium">
+                <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
+                    <div>
+                        <h2 class="slds-text-heading_medium">House Units Portfolio</h2>
+                        <p class="slds-text-body_small slds-text-color_weak">All individual 1 BHK, 2 BHK, and 3 BHK units</p>
+                    </div>
+                    <!-- Filter Pills -->
+                    <div class="filter-group">
+                        <lightning-button-group>
+                            <lightning-button label="All BHKs" variant={allFilterVariant} onclick={filterAll}></lightning-button>
+                            <lightning-button label="1 BHK" variant={bhk1FilterVariant} onclick={filter1BHK}></lightning-button>
+                            <lightning-button label="2 BHK" variant={bhk2FilterVariant} onclick={filter2BHK}></lightning-button>
+                            <lightning-button label="3 BHK" variant={bhk3FilterVariant} onclick={filter3BHK}></lightning-button>
+                        </lightning-button-group>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slds-grid slds-gutters slds-wrap">
+                <template for:each={filteredUnits} for:item="unit">
+                    <div key={unit.Id} class="slds-col slds-size_1-of-1 slds-medium-size_1-of-4 slds-m-bottom_medium">
+                        <div class="slds-card slds-p-around_small unit-card">
+                            <div class="slds-grid slds-grid_align-spread slds-m-bottom_x-small">
+                                <span class="bhk-tag">{unit.BHK_Type__c}</span>
+                                <span class={unit.statusBadgeClass}>{unit.Status__c}</span>
+                            </div>
+                            <h4 class="slds-text-heading_small">{unit.Name}</h4>
+                            <p class="slds-text-body_small slds-text-color_weak">Tower: {unit.Apartment__r.Block_Name__c} | Floor: {unit.Floor__c}</p>
+                            <div class="slds-m-top_small price-box">
+                                <span class="price-label">Price:</span>
+                                <lightning-formatted-number value={unit.Base_Price__c} format-style="currency" currency-code="INR" maximum-fraction-digits="0" class="price-value"></lightning-formatted-number>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+            </div>
+
+            <!-- Sticky / Embedded Enquiry Section -->
+            <div class="slds-m-top_xx-large">
+                <c-enquiry-form default-project-id={projectId}></c-enquiry-form>
+            </div>
+        </template>
+    </div>
+</template>

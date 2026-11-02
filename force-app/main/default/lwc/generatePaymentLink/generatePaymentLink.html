@@ -1,0 +1,65 @@
+<template>
+    <lightning-quick-action-panel title="Generate Razorpay Payment Link">
+        <template if:true={isLoading}>
+            <lightning-spinner alternative-text="Processing with Razorpay" size="medium"></lightning-spinner>
+        </template>
+
+        <template if:false={linkGenerated}>
+            <div class="slds-form slds-form_stacked slds-p-around_small">
+                <lightning-combobox
+                    label="Payment Type"
+                    value={paymentType}
+                    options={paymentTypeOptions}
+                    onchange={handleTypeChange}
+                    required>
+                </lightning-combobox>
+
+                <lightning-input
+                    label="Payment Amount (INR)"
+                    type="number"
+                    formatter="currency"
+                    value={amount}
+                    onchange={handleAmountChange}
+                    required
+                    class="slds-m-top_small">
+                </lightning-input>
+
+                <lightning-combobox
+                    label="Link Validity (Expiry)"
+                    value={expiryHours}
+                    options={expiryOptions}
+                    onchange={handleExpiryChange}
+                    class="slds-m-top_small">
+                </lightning-combobox>
+
+                <p class="slds-text-body_small slds-text-color_weak slds-m-top_medium">
+                    <lightning-icon icon-name="utility:info" size="xx-small" class="slds-m-right_xx-small"></lightning-icon>
+                    A secure Razorpay payment link will be created and automatically dispatched to the customer via Email and WhatsApp.
+                </p>
+            </div>
+        </template>
+
+        <template if:true={linkGenerated}>
+            <div class="slds-box slds-theme_success slds-m-around_small slds-text-align_center">
+                <lightning-icon icon-name="action:approval" size="medium" alternative-text="Success"></lightning-icon>
+                <h3 class="slds-text-heading_small slds-m-top_small font-weight-bold">Payment Link Dispatched!</h3>
+                <p class="slds-m-top_xx-small slds-text-body_small">Notification sent to customer via Email & WhatsApp.</p>
+
+                <div class="slds-m-top_medium slds-box slds-theme_default slds-text-align_left">
+                    <p class="slds-text-title_caps">Payment Link URL</p>
+                    <a href={shortUrl} target="_blank" class="slds-text-body_regular break-all">{shortUrl}</a>
+                </div>
+            </div>
+        </template>
+
+        <div slot="footer">
+            <template if:false={linkGenerated}>
+                <lightning-button label="Cancel" onclick={handleCancel} class="slds-m-right_x-small"></lightning-button>
+                <lightning-button variant="brand" label="Generate & Send Link" onclick={handleGenerate}></lightning-button>
+            </template>
+            <template if:true={linkGenerated}>
+                <lightning-button variant="brand" label="Done" onclick={handleCancel}></lightning-button>
+            </template>
+        </div>
+    </lightning-quick-action-panel>
+</template>

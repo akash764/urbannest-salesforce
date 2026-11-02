@@ -1,0 +1,59 @@
+<template>
+    <div class="slds-box slds-theme_default slds-p-around_medium scheduler-card">
+        <div class="slds-m-bottom_medium">
+            <span class="slds-badge slds-theme_brand">Assisted Site Visit</span>
+            <h2 class="slds-text-heading_medium slds-m-top_xx-small">Schedule a Property Visit & Chauffeur Cab</h2>
+            <p class="slds-text-body_small slds-text-color_weak">Complimentary chauffeur pickup & drop available directly from your doorstep.</p>
+        </div>
+
+        <template if:true={isSuccess}>
+            <div class="slds-box slds-theme_success slds-p-around_medium slds-m-bottom_medium slds-text-align_center">
+                <lightning-icon icon-name="action:approval" size="small" alternative-text="Success"></lightning-icon>
+                <h3 class="slds-text-heading_small slds-m-top_x-small font-weight-bold">Site Visit & Vehicle Request Booked!</h3>
+                <p class="slds-text-body_small slds-m-top_xx-small">An SMS & WhatsApp confirmation with vehicle logistics details has been dispatched.</p>
+            </div>
+        </template>
+
+        <div class="slds-form slds-form_stacked">
+            <div class="slds-grid slds-gutters slds-wrap">
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                    <lightning-input label="Your Full Name" required value={formData.name} onchange={handleFieldChange} data-field="name"></lightning-input>
+                </div>
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                    <lightning-input label="Contact Phone" type="tel" required value={formData.phone} onchange={handleFieldChange} data-field="phone"></lightning-input>
+                </div>
+            </div>
+
+            <div class="slds-grid slds-gutters slds-wrap slds-m-top_x-small">
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                    <lightning-combobox label="Destination Project" options={projectOptions} value={formData.projectId} onchange={handleFieldChange} data-field="projectId" required></lightning-combobox>
+                </div>
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                    <lightning-input label="Visit Date" type="date" required value={formData.visitDate} onchange={handleFieldChange} data-field="visitDate"></lightning-input>
+                </div>
+            </div>
+
+            <div class="slds-m-top_small slds-box slds-box_x-small slds-theme_shade">
+                <lightning-input type="checkbox" label="Request Free Chauffeur Cab Pickup (UrbanNest Fleet)" checked={formData.needCab} onchange={handleCabToggle}></lightning-input>
+                
+                <template if:true={formData.needCab}>
+                    <div class="slds-m-top_x-small">
+                        <lightning-input label="Doorstep Pickup Address" required value={formData.pickupAddress} onchange={handleFieldChange} data-field="pickupAddress" placeholder="House/Flat No, Landmark, City"></lightning-input>
+                        <div class="slds-grid slds-gutters slds-wrap slds-m-top_xx-small">
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-combobox label="Passengers" options={passengerOptions} value={formData.passengers} onchange={handleFieldChange} data-field="passengers"></lightning-combobox>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-combobox label="Preferred Vehicle" options={vehicleOptions} value={formData.vehicleType} onchange={handleFieldChange} data-field="vehicleType"></lightning-combobox>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+            </div>
+
+            <div class="slds-m-top_medium">
+                <lightning-button variant="brand" label="Confirm Site Visit & Vehicle" onclick={handleSubmit} class="slds-button_stretch"></lightning-button>
+            </div>
+        </div>
+    </div>
+</template>
